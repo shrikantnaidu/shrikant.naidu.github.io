@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Face Generation with GAN</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="parsa-jekyll" />
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/bootstrap.min.css">
+  <!-- slick slider -->
+  <link rel="stylesheet" href="/assets/plugins/slick/slick.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="/assets/plugins/themify-icons/themify-icons.css">
+
+  <!-- Main Stylesheet -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+  
+  <!--Favicon-->
+  <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+
+</head>
+
+
+<body>
+  
+
+  
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- /preloader -->
+  
+
+  <header class="navigation">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    
+    <a class="navbar-brand" href="http://localhost:4000/"><img class="img-fluid" src="/assets/images/s-logo.png" alt="Shrikant Naidu"></a>
+    
+    <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navogation"
+      aria-controls="navogation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse text-center" id="navogation">
+      <ul class="navbar-nav ml-auto">
+        
+        
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" href="/">Home</a>
+        </li>
+        
+        
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link text-uppercase text-dark dropdown-toggle" href="#" id="navbarDropdown"
+            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Projects
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            <a class="dropdown-item" href="/DL/">Deep Learning</a>
+            
+          </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" href="/about/">About</a>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" href="/contact/">Contact</a>
+        </li>
+        
+        
+      </ul>
+      <form class="form-inline position-relative ml-lg-4" action="/search.html" method="get">
+        <input class="form-control px-0 w-100" type="search" id="search-box" name="query" placeholder="Search">
+        <button class="search-icon" type="submit"><i class="ti-search text-dark"></i></button>
+      </form>
+    </div>
+  </nav>
+</header>
+
+    <!-- page-title -->
+<section class="section bg-secondary">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Face Generation with GAN</h4>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- /page-title -->
+
+<!-- blog single -->
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<ul class="list-inline d-flex justify-content-between py-3">
+					<li class="list-inline-item"><i class="ti-user mr-2"></i>Post by Shrikant Naidu</li>
+					<li class="list-inline-item"><i class="ti-calendar mr-2"></i>Jun 14, 2020</li>
+				</ul>
+				
+				<img src="/assets/images/masonary-post/face-gen.jpg" alt="Face Generation with GAN" class="w-100 img-fluid mb-4">
+				
+				<div class="content">
+					<h1 id="face-generation-with-gan">Face Generation with GAN</h1>
+
+<p>In this project, you’ll define and train a DCGAN on a dataset of faces. Your goal is to get a generator network to generate <em>new</em> images of faces that look as realistic as possible!</p>
+
+<p>The project will be broken down into a series of tasks from <strong>loading in data to defining and training adversarial networks</strong>. At the end of the notebook, you’ll be able to visualize the results of your trained Generator to see how it performs; your generated samples should look like fairly realistic faces with small amounts of noise.</p>
+
+<h3 id="get-the-data">Get the Data</h3>
+
+<p>You’ll be using the <a href="http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html">CelebFaces Attributes Dataset (CelebA)</a> to train your adversarial networks.</p>
+
+<p>This dataset is more complex than the number datasets (like MNIST or SVHN) you’ve been working with, and so, you should prepare to define deeper networks and train them for a longer time to get good results. It is suggested that you utilize a GPU for training.</p>
+
+<h3 id="pre-processed-data">Pre-processed Data</h3>
+
+<p>Since the project’s main focus is on building the GANs, we’ve done <em>some</em> of the pre-processing for you. Each of the CelebA images has been cropped to remove parts of the image that don’t include a face, then resized down to 64x64x3 NumPy images. Some sample data is show below.</p>
+
+<!-- <img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets//processed_face_data.png" width=60% /> -->
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_9_0.png" alt="png" /></p>
+
+<blockquote>
+  <p>If you are working locally, you can download this data <a href="https://s3.amazonaws.com/video.udacity-data.com/topher/2018/November/5be7eb6f_processed-celeba-small/processed-celeba-small.zip">by clicking here</a></p>
+</blockquote>
+
+<p>This is a zip file that you’ll need to extract in the home directory of this notebook for further loading and processing. After extracting the data, you should be left with a directory of data <code class="language-plaintext highlighter-rouge">processed_celeba_small/</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># can comment out after executing
+# !unzip processed_celeba_small.zip
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data_dir</span> <span class="o">=</span> <span class="s">'processed_celeba_small/'</span>
+
+<span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL
+"""</span>
+<span class="kn">import</span> <span class="n">pickle</span> <span class="k">as</span> <span class="n">pkl</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">problem_unittests</span> <span class="k">as</span> <span class="n">tests</span>
+<span class="c1">#import helper
+</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div></div>
+
+<h2 id="visualize-the-celeba-data">Visualize the CelebA Data</h2>
+
+<p>The <a href="http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html">CelebA</a> dataset contains over 200,000 celebrity images with annotations. Since you’re going to be generating faces, you won’t need the annotations, you’ll only need the images. Note that these are color images with <a href="https://en.wikipedia.org/wiki/Channel_(digital_image)#RGB_Images">3 color channels (RGB)</a> each.</p>
+
+<h3 id="pre-process-and-load-the-data">Pre-process and Load the Data</h3>
+
+<p>Since the project’s main focus is on building the GANs, we’ve done <em>some</em> of the pre-processing for you. Each of the CelebA images has been cropped to remove parts of the image that don’t include a face, then resized down to 64x64x3 NumPy images. This <em>pre-processed</em> dataset is a smaller subset of the very large CelebA data.</p>
+
+<blockquote>
+  <p>There are a few other steps that you’ll need to <strong>transform</strong> this data and create a <strong>DataLoader</strong>.</p>
+</blockquote>
+
+<h4 id="exercise-complete-the-following-get_dataloader-function-such-that-it-satisfies-these-requirements">Exercise: Complete the following <code class="language-plaintext highlighter-rouge">get_dataloader</code> function, such that it satisfies these requirements:</h4>
+
+<ul>
+  <li>Your images should be square, Tensor images of size <code class="language-plaintext highlighter-rouge">image_size x image_size</code> in the x and y dimension.</li>
+  <li>Your function should return a DataLoader that shuffles and batches these Tensor images.</li>
+</ul>
+
+<h4 id="imagefolder">ImageFolder</h4>
+
+<p>To create a dataset given a directory of images, it’s recommended that you use PyTorch’s <a href="https://pytorch.org/docs/stable/torchvision/datasets.html#imagefolder">ImageFolder</a> wrapper, with a root directory <code class="language-plaintext highlighter-rouge">processed_celeba_small/</code> and data transformation passed in.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># necessary imports
+</span><span class="kn">import</span> <span class="n">torch</span>
+<span class="kn">from</span> <span class="n">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="n">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="s">'processed_celeba_small/'</span><span class="p">):</span>
+    <span class="s">"""
+    Batch the neural network data using DataLoader
+    :param batch_size: The size of each batch; the number of images in a batch
+    :param img_size: The square size of the image data (x, y)
+    :param data_dir: Directory where image data is located
+    :return: DataLoader with batched data
+    """</span>
+    
+    <span class="c1"># TODO: Implement function and return a dataloader
+</span>    <span class="c1"># resize and normalize the images
+</span>    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="nc">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="p">.</span><span class="nc">Resize</span><span class="p">(</span><span class="n">image_size</span><span class="p">),</span> 
+                                    <span class="n">transforms</span><span class="p">.</span><span class="nc">ToTensor</span><span class="p">()])</span>
+
+    <span class="c1"># define datasets using ImageFolder
+</span>    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">.</span><span class="nc">ImageFolder</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span>
+
+    <span class="c1"># create and return DataLoaders
+</span>    <span class="n">data_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="nc">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">data_loader</span>
+</code></pre></div></div>
+
+<h2 id="create-a-dataloader">Create a DataLoader</h2>
+
+<h4 id="exercise-create-a-dataloader-celeba_train_loader-with-appropriate-hyperparameters">Exercise: Create a DataLoader <code class="language-plaintext highlighter-rouge">celeba_train_loader</code> with appropriate hyperparameters.</h4>
+
+<p>Call the above function and create a dataloader to view images.</p>
+<ul>
+  <li>You can decide on any reasonable <code class="language-plaintext highlighter-rouge">batch_size</code> parameter</li>
+  <li>Your <code class="language-plaintext highlighter-rouge">image_size</code> <strong>must be</strong> <code class="language-plaintext highlighter-rouge">32</code>. Resizing the data to a smaller size will make for faster training, while still creating convincing images of faces!</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define function hyperparameters
+</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">img_size</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""</span>
+<span class="c1"># Call your function and get a dataloader
+</span><span class="n">celeba_train_loader</span> <span class="o">=</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">img_size</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Next, you can view some images! You should seen square images of somewhat-centered faces.</p>
+
+<p>Note: You’ll need to convert the Tensor images into a NumPy type and transpose the dimensions to correctly display an image, suggested <code class="language-plaintext highlighter-rouge">imshow</code> code is below, but it may not be perfect.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># helper display function
+</span><span class="k">def</span> <span class="nf">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+    <span class="n">npimg</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="nf">numpy</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">transpose</span><span class="p">(</span><span class="n">npimg</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+
+<span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""</span>
+<span class="c1"># obtain one batch of training images
+</span><span class="n">dataiter</span> <span class="o">=</span> <span class="nf">iter</span><span class="p">(</span><span class="n">celeba_train_loader</span><span class="p">)</span>
+<span class="n">images</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dataiter</span><span class="p">.</span><span class="nf">next</span><span class="p">()</span> <span class="c1"># _ for no labels
+</span>
+<span class="c1"># plot the images in the batch, along with the corresponding labels
+</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plot_size</span><span class="o">=</span><span class="mi">20</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="n">plot_size</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="nf">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">plot_size</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+    <span class="nf">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_9_0.png" alt="png" /></p>
+
+<h4 id="exercise-pre-process-your-image-data-and-scale-it-to-a-pixel-range-of--1-to-1">Exercise: Pre-process your image data and scale it to a pixel range of -1 to 1</h4>
+
+<p>You need to do a bit of pre-processing; you know that the output of a <code class="language-plaintext highlighter-rouge">tanh</code> activated generator will contain pixel values in a range from -1 to 1, and so, we need to rescale our training images to a range of -1 to 1. (Right now, they are in a range from 0-1.)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># TODO: Complete the scale function
+</span><span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">feature_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+    <span class="s">''' Scale takes in an image x and returns that image, scaled
+       with a feature_range of pixel values from -1 to 1. 
+       This function assumes that the input x is already scaled from 0-1.'''</span>
+    <span class="c1"># assume x is scaled to (0, 1)
+</span>    <span class="c1"># scale to feature_range and return scaled x
+</span>    <span class="nb">min</span><span class="p">,</span><span class="nb">max</span> <span class="o">=</span> <span class="n">feature_range</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="p">(</span><span class="nb">max</span> <span class="o">-</span> <span class="nb">min</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span>
+    <span class="k">return</span> <span class="n">x</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""</span>
+<span class="c1"># check scaled range
+# should be close to -1 to 1
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">scaled_img</span> <span class="o">=</span> <span class="nf">scale</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">'Min: '</span><span class="p">,</span> <span class="n">scaled_img</span><span class="p">.</span><span class="nf">min</span><span class="p">())</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">'Max: '</span><span class="p">,</span> <span class="n">scaled_img</span><span class="p">.</span><span class="nf">max</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Min:  tensor(-0.9922)
+Max:  tensor(1.)
+</code></pre></div></div>
+
+<hr />
+<h1 id="define-the-model">Define the Model</h1>
+
+<p>A GAN is comprised of two adversarial networks, a discriminator and a generator.</p>
+
+<h2 id="discriminator">Discriminator</h2>
+
+<p>Your first task will be to define the discriminator. This is a convolutional classifier like you’ve built before, only without any maxpooling layers. To deal with this complex data, it’s suggested you use a deep network with <strong>normalization</strong>. You are also allowed to create any helper functions that may be useful.</p>
+
+<h4 id="exercise-complete-the-discriminator-class">Exercise: Complete the Discriminator class</h4>
+<ul>
+  <li>The inputs to the discriminator are 32x32x3 tensor images</li>
+  <li>The output should be a single value that will indicate whether a given image is real or fake</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="n">torch.nn.functional</span> <span class="k">as</span> <span class="n">F</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># helper to build a convolution layer
+</span><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span><span class="n">out_channels</span><span class="p">,</span><span class="n">kernel_size</span><span class="p">,</span><span class="n">stride</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span><span class="n">padding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="n">batch_norm</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
+    <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">conv_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span> <span class="o">=</span> <span class="n">in_channels</span><span class="p">,</span><span class="n">out_channels</span> <span class="o">=</span> <span class="n">out_channels</span><span class="p">,</span>
+                      <span class="n">kernel_size</span> <span class="o">=</span> <span class="n">kernel_size</span><span class="p">,</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span><span class="p">,</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+    
+    <span class="n">layers</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">conv_layer</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">batch_norm</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">layers</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Discriminator</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">conv_dim</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+        <span class="s">"""
+        Initialize the Discriminator Module
+        :param conv_dim: The depth of the first convolutional layer
+        """</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">Discriminator</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">conv_dim</span> <span class="o">=</span> <span class="n">conv_dim</span>
+        <span class="c1"># covolution layers
+</span>        
+        <span class="c1"># input 32 x 32 x 3 -&gt; output 16 x 16 x 32
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="nf">conv</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">conv_dim</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">batch_norm</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="c1"># input 16 x 16 x 32 -&gt;  output 8 x 8 x 64
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="nf">conv</span><span class="p">(</span><span class="n">conv_dim</span><span class="p">,</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        <span class="c1"># input 8 x 8 x 64 -&gt; output 4 x 4 x 128
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">conv3</span> <span class="o">=</span> <span class="nf">conv</span><span class="p">(</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        <span class="c1"># input 4 x 4 x 128 -&gt; output 2 x 2 x 256
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">conv4</span> <span class="o">=</span> <span class="nf">conv</span><span class="p">(</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        
+        <span class="c1"># classification layers
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Linear</span><span class="p">(</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">8</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="s">"""
+        Forward propagation of the neural network
+        :param x: The input to the neural network     
+        :return: Discriminator logits; the output of the neural network
+        """</span>
+        <span class="c1"># define feedforward behavior
+</span>        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">leaky_relu</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">leaky_relu</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">leaky_relu</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">conv3</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">leaky_relu</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">conv4</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="mf">0.2</span><span class="p">)</span>
+        
+        <span class="c1"># output
+</span>        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="nf">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">self</span><span class="p">.</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">8</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""</span>
+<span class="n">tests</span><span class="p">.</span><span class="nf">test_discriminator</span><span class="p">(</span><span class="n">Discriminator</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tests Passed
+</code></pre></div></div>
+
+<h2 id="generator">Generator</h2>
+
+<p>The generator should upsample an input and generate a <em>new</em> image of the same size as our training data <code class="language-plaintext highlighter-rouge">32x32x3</code>. This should be mostly transpose convolutional layers with normalization applied to the outputs.</p>
+
+<h4 id="exercise-complete-the-generator-class">Exercise: Complete the Generator class</h4>
+<ul>
+  <li>The inputs to the generator are vectors of some length <code class="language-plaintext highlighter-rouge">z_size</code></li>
+  <li>The output should be a image of shape <code class="language-plaintext highlighter-rouge">32x32x3</code></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">deconv</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_norm</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="c1"># create a sequence of transpose + optional batch norm layers
+</span>    <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">transpose_conv_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">ConvTranspose2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> 
+                                              <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="c1"># append transpose convolutional layer
+</span>    <span class="n">layers</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">transpose_conv_layer</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">batch_norm</span><span class="p">:</span>
+        <span class="c1"># append batchnorm layer
+</span>        <span class="n">layers</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">))</span>
+        
+    <span class="k">return</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Generator</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">conv_dim</span> <span class="o">=</span> <span class="mi">32</span><span class="p">):</span>
+        <span class="s">"""
+        Initialize the Generator Module
+        :param z_size: The length of the input latent vector, z
+        :param conv_dim: The depth of the inputs to the *last* transpose convolutional layer
+        """</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">Generator</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">conv_dim</span> <span class="o">=</span> <span class="n">conv_dim</span>
+        
+        <span class="n">self</span><span class="p">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Linear</span><span class="p">(</span><span class="n">z_size</span><span class="p">,</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">8</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">self</span><span class="p">.</span><span class="n">t_conv1</span> <span class="o">=</span> <span class="nf">deconv</span><span class="p">(</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">t_conv2</span> <span class="o">=</span> <span class="nf">deconv</span><span class="p">(</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">t_conv3</span> <span class="o">=</span> <span class="nf">deconv</span><span class="p">(</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="n">conv_dim</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">t_conv4</span> <span class="o">=</span> <span class="nf">deconv</span><span class="p">(</span><span class="n">conv_dim</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">batch_norm</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="s">"""
+        Forward propagation of the neural network
+        :param x: The input to the neural network     
+        :return: A 32x32x3 Tensor image as output
+        """</span>
+        <span class="c1"># define feedforward behavior
+</span>        <span class="n">x</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="nf">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">self</span><span class="p">.</span><span class="n">conv_dim</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">relu</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">t_conv1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">relu</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">t_conv2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">relu</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">t_conv3</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">tanh</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">t_conv4</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""</span>
+<span class="n">tests</span><span class="p">.</span><span class="nf">test_generator</span><span class="p">(</span><span class="n">Generator</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tests Passed
+</code></pre></div></div>
+
+<h2 id="initialize-the-weights-of-your-networks">Initialize the weights of your networks</h2>
+
+<p>To help your models converge, you should initialize the weights of the convolutional and linear layers in your model. From reading the <a href="https://arxiv.org/pdf/1511.06434.pdf">original DCGAN paper</a>, they say:</p>
+<blockquote>
+  <p>All weights were initialized from a zero-centered Normal distribution with standard deviation 0.02.</p>
+</blockquote>
+
+<p>So, your next task will be to define a weight initialization function that does just this!</p>
+
+<p>You can refer back to the lesson on weight initialization or even consult existing model code, such as that from <a href="https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/models/networks.py">the <code class="language-plaintext highlighter-rouge">networks.py</code> file in CycleGAN Github repository</a> to help you complete this function.</p>
+
+<h4 id="exercise-complete-the-weight-initialization-function">Exercise: Complete the weight initialization function</h4>
+
+<ul>
+  <li>This should initialize only <strong>convolutional</strong> and <strong>linear</strong> layers</li>
+  <li>Initialize the weights to a normal distribution, centered around 0, with a standard deviation of 0.02.</li>
+  <li>The bias terms, if they exist, may be left alone or set to 0.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">weights_init_normal</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="s">"""
+    Applies initial weights to certain layers in a model .
+    The weights are taken from a normal distribution 
+    with mean = 0, std dev = 0.02.
+    :param m: A module or layer in a network    
+    """</span>
+    <span class="c1"># classname will be something like:
+</span>    <span class="c1"># `Conv`, `BatchNorm2d`, `Linear`, etc.
+</span>    <span class="n">classname</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">__name__</span>
+    
+    <span class="c1"># TODO: Apply initial weights to convolutional and linear layers
+</span>    <span class="k">if</span> <span class="n">classname</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="s">'Conv'</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">classname</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="s">'Linear'</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">nn</span><span class="p">.</span><span class="n">init</span><span class="p">.</span><span class="nf">normal_</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">weight</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">hasattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s">'bias'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">m</span><span class="p">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">m</span><span class="p">.</span><span class="n">bias</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="nf">fill_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="build-complete-network">Build complete network</h2>
+
+<p>Define your models’ hyperparameters and instantiate the discriminator and generator from the classes defined above. Make sure you’ve passed in the correct input arguments.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""</span>
+<span class="k">def</span> <span class="nf">build_network</span><span class="p">(</span><span class="n">d_conv_dim</span><span class="p">,</span> <span class="n">g_conv_dim</span><span class="p">,</span> <span class="n">z_size</span><span class="p">):</span>
+    <span class="c1"># define discriminator and generator
+</span>    <span class="n">D</span> <span class="o">=</span> <span class="nc">Discriminator</span><span class="p">(</span><span class="n">d_conv_dim</span><span class="p">)</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="nc">Generator</span><span class="p">(</span><span class="n">z_size</span><span class="o">=</span><span class="n">z_size</span><span class="p">,</span> <span class="n">conv_dim</span><span class="o">=</span><span class="n">g_conv_dim</span><span class="p">)</span>
+
+    <span class="c1"># initialize model weights
+</span>    <span class="n">D</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">weights_init_normal</span><span class="p">)</span>
+    <span class="n">G</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">weights_init_normal</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">D</span><span class="p">,</span> <span class="n">G</span>
+</code></pre></div></div>
+
+<h4 id="exercise-define-model-hyperparameters">Exercise: Define model hyperparameters</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define model hyperparams
+</span><span class="n">d_conv_dim</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">g_conv_dim</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">z_size</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
+"""</span>
+<span class="n">D</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="nf">build_network</span><span class="p">(</span><span class="n">d_conv_dim</span><span class="p">,</span> <span class="n">g_conv_dim</span><span class="p">,</span> <span class="n">z_size</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Discriminator(
+  (conv1): Sequential(
+    (0): Conv2d(3, 32, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+  )
+  (conv2): Sequential(
+    (0): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (conv4): Sequential(
+    (0): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (fc): Linear(in_features=1024, out_features=1, bias=True)
+)
+
+Generator(
+  (fc): Linear(in_features=100, out_features=1024, bias=True)
+  (t_conv1): Sequential(
+    (0): ConvTranspose2d(256, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (t_conv2): Sequential(
+    (0): ConvTranspose2d(128, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (t_conv3): Sequential(
+    (0): ConvTranspose2d(64, 32, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (t_conv4): Sequential(
+    (0): ConvTranspose2d(32, 3, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+  )
+)
+</code></pre></div></div>
+
+<h3 id="training-on-gpu">Training on GPU</h3>
+
+<p>Check if you can train on GPU. Here, we’ll set this as a boolean variable <code class="language-plaintext highlighter-rouge">train_on_gpu</code>. Later, you’ll be responsible for making sure that</p>
+<blockquote>
+  <ul>
+    <li>Models,</li>
+    <li>Model inputs, and</li>
+    <li>Loss function arguments</li>
+  </ul>
+</blockquote>
+
+<p>Are moved to GPU, where appropriate.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL
+"""</span>
+<span class="kn">import</span> <span class="n">torch</span>
+
+<span class="c1"># Check for a GPU
+</span><span class="n">train_on_gpu</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="nf">is_available</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">'No GPU found. Please use a GPU to train your neural network.'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">'Training on GPU!'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training on GPU!
+</code></pre></div></div>
+
+<hr />
+<h2 id="discriminator-and-generator-losses">Discriminator and Generator Losses</h2>
+
+<p>Now we need to calculate the losses for both types of adversarial networks.</p>
+
+<h3 id="discriminator-losses">Discriminator Losses</h3>
+
+<blockquote>
+  <ul>
+    <li>For the discriminator, the total loss is the sum of the losses for real and fake images, <code class="language-plaintext highlighter-rouge">d_loss = d_real_loss + d_fake_loss</code>.</li>
+    <li>Remember that we want the discriminator to output 1 for real images and 0 for fake images, so we need to set up the losses to reflect that.</li>
+  </ul>
+</blockquote>
+
+<h3 id="generator-loss">Generator Loss</h3>
+
+<p>The generator loss will look similar only with flipped labels. The generator’s goal is to get the discriminator to <em>think</em> its generated images are <em>real</em>.</p>
+
+<h4 id="exercise-complete-real-and-fake-loss-functions">Exercise: Complete real and fake loss functions</h4>
+
+<p><strong>You may choose to use either cross entropy or a least squares error loss to complete the following <code class="language-plaintext highlighter-rouge">real_loss</code> and <code class="language-plaintext highlighter-rouge">fake_loss</code> functions.</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">real_loss</span><span class="p">(</span><span class="n">D_out</span><span class="p">,</span><span class="n">smooth</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">D_out</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">smooth</span><span class="p">:</span>
+        <span class="c1"># smooth, real labels = 0.9
+</span>        <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">ones</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">ones</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span> <span class="c1"># real labels = 1
+</span>    <span class="c1"># move labels to GPU if available     
+</span>    <span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+    <span class="c1"># binary cross entropy with logits loss
+</span>    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">BCEWithLogitsLoss</span><span class="p">()</span>
+    <span class="c1"># calculate loss
+</span>    <span class="n">loss</span> <span class="o">=</span> <span class="nf">criterion</span><span class="p">(</span><span class="n">D_out</span><span class="p">.</span><span class="nf">squeeze</span><span class="p">(),</span> <span class="n">labels</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+<span class="k">def</span> <span class="nf">fake_loss</span><span class="p">(</span><span class="n">D_out</span><span class="p">):</span>
+    <span class="s">'''Calculates how close discriminator outputs are to being fake.
+       param, D_out: discriminator logits
+       return: fake loss'''</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">D_out</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span> <span class="c1"># fake labels = 0
+</span>    <span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">BCEWithLogitsLoss</span><span class="p">()</span>
+    <span class="c1"># calculate loss
+</span>    <span class="n">loss</span> <span class="o">=</span> <span class="nf">criterion</span><span class="p">(</span><span class="n">D_out</span><span class="p">.</span><span class="nf">squeeze</span><span class="p">(),</span> <span class="n">labels</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span>
+</code></pre></div></div>
+
+<h2 id="optimizers">Optimizers</h2>
+
+<h4 id="exercise-define-optimizers-for-your-discriminator-d-and-generator-g">Exercise: Define optimizers for your Discriminator (D) and Generator (G)</h4>
+
+<p>Define optimizers for your models with appropriate hyperparameters.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">torch.optim</span> <span class="k">as</span> <span class="n">optim</span>
+
+<span class="c1"># Create optimizers for the discriminator D and generator G
+</span><span class="n">lr</span> <span class="o">=</span> <span class="mf">0.0002</span>
+<span class="n">beta1</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="n">beta2</span><span class="o">=</span><span class="mf">0.999</span> <span class="c1"># default value
+</span>
+<span class="c1"># Create optimizers for the discriminator and generator
+</span><span class="n">d_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="p">.</span><span class="nc">Adam</span><span class="p">(</span><span class="n">D</span><span class="p">.</span><span class="nf">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">beta1</span><span class="p">,</span> <span class="n">beta2</span><span class="p">])</span>
+<span class="n">g_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="p">.</span><span class="nc">Adam</span><span class="p">(</span><span class="n">G</span><span class="p">.</span><span class="nf">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">beta1</span><span class="p">,</span> <span class="n">beta2</span><span class="p">])</span>
+</code></pre></div></div>
+
+<hr />
+<h2 id="training">Training</h2>
+
+<p>Training will involve alternating between training the discriminator and the generator. You’ll use your functions <code class="language-plaintext highlighter-rouge">real_loss</code> and <code class="language-plaintext highlighter-rouge">fake_loss</code> to help you calculate the discriminator losses.</p>
+
+<ul>
+  <li>You should train the discriminator by alternating on real and fake images</li>
+  <li>Then the generator, which tries to trick the discriminator and should have an opposing loss function</li>
+</ul>
+
+<h4 id="saving-samples">Saving Samples</h4>
+
+<p>You’ve been given some code to print out some loss statistics and save some generated “fake” samples.</p>
+
+<h4 id="exercise-complete-the-training-function">Exercise: Complete the training function</h4>
+
+<p>Keep in mind that, if you’ve moved your models to GPU, you’ll also have to move any model inputs to GPU.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">print_every</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="s">'''Trains adversarial networks for some number of epochs
+       param, D: the discriminator network
+       param, G: the generator network
+       param, n_epochs: number of epochs to train for
+       param, print_every: when to print and record the models' losses
+       return: D and G losses'''</span>
+    
+    <span class="c1"># move models to GPU
+</span>    <span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+        <span class="n">D</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+        <span class="n">G</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+
+    <span class="c1"># keep track of loss and generated, "fake" samples
+</span>    <span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Get some fixed data for sampling. These are images that are held
+</span>    <span class="c1"># constant throughout training, and allow us to inspect the model's performance
+</span>    <span class="n">sample_size</span><span class="o">=</span><span class="mi">16</span>
+    <span class="n">fixed_z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">sample_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
+    <span class="n">fixed_z</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">from_numpy</span><span class="p">(</span><span class="n">fixed_z</span><span class="p">).</span><span class="nf">float</span><span class="p">()</span>
+    <span class="c1"># move z to GPU if available
+</span>    <span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+        <span class="n">fixed_z</span> <span class="o">=</span> <span class="n">fixed_z</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+
+    <span class="c1"># epoch training loop
+</span>    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+
+        <span class="c1"># batch training loop
+</span>        <span class="k">for</span> <span class="n">batch_i</span><span class="p">,</span> <span class="p">(</span><span class="n">real_images</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">celeba_train_loader</span><span class="p">):</span>
+
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="n">real_images</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">real_images</span> <span class="o">=</span> <span class="nf">scale</span><span class="p">(</span><span class="n">real_images</span><span class="p">)</span>
+
+            <span class="c1"># ===============================================
+</span>            <span class="c1">#         YOUR CODE HERE: TRAIN THE NETWORKS
+</span>            <span class="c1"># ===============================================
+</span>            
+            <span class="c1"># ============================================
+</span>            <span class="c1">#            TRAIN THE DISCRIMINATOR
+</span>            <span class="c1"># ============================================
+</span>        
+            <span class="n">d_optimizer</span><span class="p">.</span><span class="nf">zero_grad</span><span class="p">()</span>
+            <span class="c1"># 1. Train the discriminator on real and fake images
+</span>            
+            <span class="c1"># Train with real images
+</span>            <span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+                <span class="n">real_images</span> <span class="o">=</span> <span class="n">real_images</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+            
+            <span class="n">D_real</span> <span class="o">=</span> <span class="nc">D</span><span class="p">(</span><span class="n">real_images</span><span class="p">)</span>
+            <span class="n">d_real_loss</span> <span class="o">=</span> <span class="nf">real_loss</span><span class="p">(</span><span class="n">D_real</span><span class="p">)</span>
+            
+            <span class="c1"># 2. Train with fake images
+</span>        
+            <span class="c1"># Generate fake images
+</span>            <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">from_numpy</span><span class="p">(</span><span class="n">z</span><span class="p">).</span><span class="nf">float</span><span class="p">()</span>
+            <span class="c1"># move x to GPU, if available
+</span>            <span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+            <span class="n">fake_images</span> <span class="o">=</span> <span class="nc">G</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+            
+            <span class="c1"># Compute the discriminator losses on fake images            
+</span>            <span class="n">D_fake</span> <span class="o">=</span> <span class="nc">D</span><span class="p">(</span><span class="n">fake_images</span><span class="p">)</span>
+            <span class="n">d_fake_loss</span> <span class="o">=</span> <span class="nf">fake_loss</span><span class="p">(</span><span class="n">D_fake</span><span class="p">)</span>
+
+            <span class="c1"># add up loss and perform backprop
+</span>            <span class="n">d_loss</span> <span class="o">=</span> <span class="n">d_real_loss</span> <span class="o">+</span> <span class="n">d_fake_loss</span>
+            <span class="n">d_loss</span><span class="p">.</span><span class="nf">backward</span><span class="p">()</span>
+            <span class="n">d_optimizer</span><span class="p">.</span><span class="nf">step</span><span class="p">()</span>
+
+             
+            <span class="c1"># =========================================
+</span>            <span class="c1">#            TRAIN THE GENERATOR
+</span>            <span class="c1"># =========================================
+</span>            <span class="n">g_optimizer</span><span class="p">.</span><span class="nf">zero_grad</span><span class="p">()</span>
+
+            <span class="c1"># 1. Train with fake images and flipped labels
+</span>
+            <span class="c1"># Generate fake images
+</span>            <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">from_numpy</span><span class="p">(</span><span class="n">z</span><span class="p">).</span><span class="nf">float</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">train_on_gpu</span><span class="p">:</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">.</span><span class="nf">cuda</span><span class="p">()</span>
+            <span class="n">fake_images</span> <span class="o">=</span> <span class="nc">G</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+            <span class="c1"># Compute the discriminator losses on fake images 
+</span>            <span class="c1"># using flipped labels!
+</span>            <span class="n">D_fake</span> <span class="o">=</span> <span class="nc">D</span><span class="p">(</span><span class="n">fake_images</span><span class="p">)</span>
+            <span class="n">g_loss</span> <span class="o">=</span> <span class="nf">real_loss</span><span class="p">(</span><span class="n">D_fake</span><span class="p">)</span> <span class="c1"># use real loss to flip labels
+</span>
+            <span class="c1"># perform backprop
+</span>            <span class="n">g_loss</span><span class="p">.</span><span class="nf">backward</span><span class="p">()</span>
+            <span class="n">g_optimizer</span><span class="p">.</span><span class="nf">step</span><span class="p">()</span>                
+                
+            
+            <span class="c1"># ===============================================
+</span>            <span class="c1">#              END OF YOUR CODE
+</span>            <span class="c1"># ===============================================
+</span>
+            <span class="c1"># Print some loss stats
+</span>            <span class="k">if</span> <span class="n">batch_i</span> <span class="o">%</span> <span class="n">print_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># append discriminator loss and generator loss
+</span>                <span class="n">losses</span><span class="p">.</span><span class="nf">append</span><span class="p">((</span><span class="n">d_loss</span><span class="p">.</span><span class="nf">item</span><span class="p">(),</span> <span class="n">g_loss</span><span class="p">.</span><span class="nf">item</span><span class="p">()))</span>
+                <span class="c1"># print discriminator and generator loss
+</span>                <span class="nf">print</span><span class="p">(</span><span class="s">'Epoch [{:5d}/{:5d}] | d_loss: {:6.4f} | g_loss: {:6.4f}'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span>
+                        <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">d_loss</span><span class="p">.</span><span class="nf">item</span><span class="p">(),</span> <span class="n">g_loss</span><span class="p">.</span><span class="nf">item</span><span class="p">()))</span>
+
+
+        <span class="c1">## AFTER EACH EPOCH##    
+</span>        <span class="c1"># this code assumes your generator is named G, feel free to change the name
+</span>        <span class="c1"># generate and save sample, fake images
+</span>        <span class="n">G</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span> <span class="c1"># for generating samples
+</span>        <span class="n">samples_z</span> <span class="o">=</span> <span class="nc">G</span><span class="p">(</span><span class="n">fixed_z</span><span class="p">)</span>
+        <span class="n">samples</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">samples_z</span><span class="p">)</span>
+        <span class="n">G</span><span class="p">.</span><span class="nf">train</span><span class="p">()</span> <span class="c1"># back to training mode
+</span>
+    <span class="c1"># Save training generator samples
+</span>    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="s">'train_samples.pkl'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pkl</span><span class="p">.</span><span class="nf">dump</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    
+    <span class="c1"># finally return losses
+</span>    <span class="k">return</span> <span class="n">losses</span>
+</code></pre></div></div>
+
+<p>Set your number of training epochs and train your GAN!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># set number of epochs 
+</span><span class="n">n_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+
+
+<span class="s">"""
+DON'T MODIFY ANYTHING IN THIS CELL
+"""</span>
+<span class="c1"># call training function
+</span><span class="n">losses</span> <span class="o">=</span> <span class="nf">train</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="n">n_epochs</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Epoch [    1/   10] | d_loss: 1.4375 | g_loss: 0.8283
+Epoch [    1/   10] | d_loss: 0.1367 | g_loss: 3.4099
+Epoch [    1/   10] | d_loss: 0.0330 | g_loss: 4.5209
+Epoch [    1/   10] | d_loss: 0.0989 | g_loss: 4.5074
+Epoch [    1/   10] | d_loss: 0.2173 | g_loss: 3.7985
+Epoch [    1/   10] | d_loss: 0.2060 | g_loss: 3.5710
+Epoch [    1/   10] | d_loss: 0.4686 | g_loss: 4.2082
+Epoch [    1/   10] | d_loss: 0.9417 | g_loss: 4.9502
+Epoch [    1/   10] | d_loss: 0.1812 | g_loss: 2.7069
+Epoch [    1/   10] | d_loss: 0.2640 | g_loss: 3.7460
+Epoch [    1/   10] | d_loss: 0.3547 | g_loss: 3.1814
+Epoch [    1/   10] | d_loss: 0.9886 | g_loss: 1.3821
+Epoch [    1/   10] | d_loss: 0.6250 | g_loss: 2.3265
+Epoch [    1/   10] | d_loss: 0.4463 | g_loss: 2.8969
+Epoch [    1/   10] | d_loss: 0.8534 | g_loss: 2.5419
+Epoch [    1/   10] | d_loss: 0.6156 | g_loss: 3.4758
+Epoch [    1/   10] | d_loss: 0.6725 | g_loss: 2.4061
+Epoch [    1/   10] | d_loss: 0.5060 | g_loss: 3.2003
+Epoch [    1/   10] | d_loss: 1.2175 | g_loss: 1.5792
+Epoch [    1/   10] | d_loss: 1.0904 | g_loss: 1.3760
+Epoch [    1/   10] | d_loss: 1.0209 | g_loss: 1.4324
+Epoch [    1/   10] | d_loss: 0.7405 | g_loss: 2.5089
+Epoch [    1/   10] | d_loss: 0.7077 | g_loss: 2.0425
+Epoch [    1/   10] | d_loss: 0.9027 | g_loss: 1.8268
+Epoch [    1/   10] | d_loss: 0.7777 | g_loss: 1.2721
+Epoch [    1/   10] | d_loss: 0.8589 | g_loss: 1.4374
+Epoch [    1/   10] | d_loss: 0.5048 | g_loss: 2.3149
+Epoch [    1/   10] | d_loss: 0.9330 | g_loss: 2.0192
+Epoch [    1/   10] | d_loss: 0.7803 | g_loss: 1.7245
+Epoch [    1/   10] | d_loss: 0.8362 | g_loss: 2.3229
+Epoch [    1/   10] | d_loss: 0.5941 | g_loss: 1.9812
+Epoch [    1/   10] | d_loss: 0.6449 | g_loss: 1.8468
+Epoch [    1/   10] | d_loss: 0.8615 | g_loss: 3.1905
+Epoch [    1/   10] | d_loss: 1.0127 | g_loss: 2.1786
+Epoch [    1/   10] | d_loss: 0.7481 | g_loss: 1.3780
+Epoch [    1/   10] | d_loss: 0.6624 | g_loss: 2.0557
+Epoch [    1/   10] | d_loss: 1.2710 | g_loss: 0.8236
+Epoch [    1/   10] | d_loss: 0.7089 | g_loss: 1.8478
+Epoch [    1/   10] | d_loss: 1.1152 | g_loss: 2.5029
+Epoch [    1/   10] | d_loss: 0.5635 | g_loss: 1.5920
+Epoch [    1/   10] | d_loss: 0.8962 | g_loss: 2.8575
+Epoch [    1/   10] | d_loss: 1.1699 | g_loss: 3.3993
+Epoch [    1/   10] | d_loss: 0.6756 | g_loss: 1.6613
+Epoch [    1/   10] | d_loss: 0.8714 | g_loss: 1.6527
+Epoch [    1/   10] | d_loss: 0.6948 | g_loss: 2.4757
+Epoch [    1/   10] | d_loss: 0.9373 | g_loss: 1.5293
+Epoch [    1/   10] | d_loss: 0.7582 | g_loss: 1.7391
+Epoch [    1/   10] | d_loss: 0.8760 | g_loss: 1.5461
+Epoch [    1/   10] | d_loss: 1.0955 | g_loss: 2.5232
+Epoch [    1/   10] | d_loss: 0.8702 | g_loss: 1.9970
+Epoch [    1/   10] | d_loss: 0.6099 | g_loss: 1.8245
+Epoch [    1/   10] | d_loss: 0.5941 | g_loss: 3.0635
+Epoch [    1/   10] | d_loss: 0.7388 | g_loss: 1.6954
+Epoch [    1/   10] | d_loss: 0.8215 | g_loss: 1.4895
+Epoch [    1/   10] | d_loss: 0.4918 | g_loss: 2.6645
+Epoch [    1/   10] | d_loss: 0.7824 | g_loss: 3.0270
+Epoch [    1/   10] | d_loss: 0.7255 | g_loss: 2.5206
+Epoch [    2/   10] | d_loss: 0.7361 | g_loss: 1.4261
+Epoch [    2/   10] | d_loss: 0.8221 | g_loss: 1.3983
+Epoch [    2/   10] | d_loss: 0.6529 | g_loss: 1.5358
+Epoch [    2/   10] | d_loss: 0.7648 | g_loss: 1.1755
+Epoch [    2/   10] | d_loss: 0.7850 | g_loss: 2.1602
+Epoch [    2/   10] | d_loss: 0.5967 | g_loss: 1.7183
+Epoch [    2/   10] | d_loss: 0.9293 | g_loss: 0.4311
+Epoch [    2/   10] | d_loss: 0.8048 | g_loss: 2.4040
+Epoch [    2/   10] | d_loss: 0.9546 | g_loss: 2.9014
+Epoch [    2/   10] | d_loss: 1.0130 | g_loss: 1.4458
+Epoch [    2/   10] | d_loss: 0.7787 | g_loss: 1.9187
+Epoch [    2/   10] | d_loss: 0.8206 | g_loss: 1.3583
+Epoch [    2/   10] | d_loss: 0.7602 | g_loss: 1.4859
+Epoch [    2/   10] | d_loss: 1.6796 | g_loss: 2.4626
+Epoch [    2/   10] | d_loss: 0.6030 | g_loss: 1.8397
+Epoch [    2/   10] | d_loss: 0.8352 | g_loss: 2.1232
+Epoch [    2/   10] | d_loss: 0.8560 | g_loss: 1.8031
+Epoch [    2/   10] | d_loss: 0.5210 | g_loss: 2.2766
+Epoch [    2/   10] | d_loss: 1.0136 | g_loss: 0.9756
+Epoch [    2/   10] | d_loss: 0.8236 | g_loss: 1.8405
+Epoch [    2/   10] | d_loss: 0.6088 | g_loss: 2.2920
+Epoch [    2/   10] | d_loss: 0.8901 | g_loss: 2.2165
+Epoch [    2/   10] | d_loss: 0.7736 | g_loss: 1.4659
+Epoch [    2/   10] | d_loss: 0.6071 | g_loss: 2.0560
+Epoch [    2/   10] | d_loss: 1.0470 | g_loss: 1.2345
+Epoch [    2/   10] | d_loss: 0.8429 | g_loss: 1.0077
+Epoch [    2/   10] | d_loss: 0.5577 | g_loss: 2.2328
+Epoch [    2/   10] | d_loss: 0.6432 | g_loss: 1.2822
+Epoch [    2/   10] | d_loss: 0.4028 | g_loss: 2.3859
+Epoch [    2/   10] | d_loss: 0.8212 | g_loss: 2.2920
+Epoch [    2/   10] | d_loss: 1.0978 | g_loss: 1.2951
+Epoch [    2/   10] | d_loss: 0.8459 | g_loss: 3.2531
+Epoch [    2/   10] | d_loss: 1.3283 | g_loss: 1.5369
+Epoch [    2/   10] | d_loss: 0.6483 | g_loss: 2.5114
+Epoch [    2/   10] | d_loss: 0.6488 | g_loss: 2.3417
+Epoch [    2/   10] | d_loss: 0.8230 | g_loss: 1.4507
+Epoch [    2/   10] | d_loss: 0.6827 | g_loss: 2.0984
+Epoch [    2/   10] | d_loss: 0.5202 | g_loss: 3.4786
+Epoch [    2/   10] | d_loss: 0.5568 | g_loss: 2.5354
+Epoch [    2/   10] | d_loss: 0.9407 | g_loss: 2.3356
+Epoch [    2/   10] | d_loss: 0.5611 | g_loss: 2.2820
+Epoch [    2/   10] | d_loss: 1.2914 | g_loss: 2.4045
+Epoch [    2/   10] | d_loss: 0.4088 | g_loss: 2.1361
+Epoch [    2/   10] | d_loss: 0.4458 | g_loss: 1.8634
+Epoch [    2/   10] | d_loss: 0.6059 | g_loss: 1.1045
+Epoch [    2/   10] | d_loss: 0.6917 | g_loss: 1.9551
+Epoch [    2/   10] | d_loss: 0.8114 | g_loss: 2.0670
+Epoch [    2/   10] | d_loss: 1.0485 | g_loss: 1.6118
+Epoch [    2/   10] | d_loss: 0.6789 | g_loss: 1.2525
+Epoch [    2/   10] | d_loss: 0.3771 | g_loss: 1.4703
+Epoch [    2/   10] | d_loss: 0.6499 | g_loss: 3.0064
+Epoch [    2/   10] | d_loss: 0.8662 | g_loss: 2.8859
+Epoch [    2/   10] | d_loss: 0.6973 | g_loss: 2.0897
+Epoch [    2/   10] | d_loss: 1.0380 | g_loss: 0.4704
+Epoch [    2/   10] | d_loss: 0.7165 | g_loss: 1.2300
+Epoch [    2/   10] | d_loss: 1.0388 | g_loss: 1.9755
+Epoch [    2/   10] | d_loss: 1.1867 | g_loss: 2.1088
+Epoch [    3/   10] | d_loss: 0.8097 | g_loss: 3.0393
+Epoch [    3/   10] | d_loss: 0.5019 | g_loss: 2.5709
+Epoch [    3/   10] | d_loss: 0.7984 | g_loss: 1.5304
+Epoch [    3/   10] | d_loss: 0.7146 | g_loss: 2.8520
+Epoch [    3/   10] | d_loss: 0.6904 | g_loss: 2.6993
+Epoch [    3/   10] | d_loss: 0.5089 | g_loss: 2.0663
+Epoch [    3/   10] | d_loss: 0.9721 | g_loss: 1.3061
+Epoch [    3/   10] | d_loss: 0.7447 | g_loss: 3.1119
+Epoch [    3/   10] | d_loss: 0.6252 | g_loss: 2.6550
+Epoch [    3/   10] | d_loss: 0.3589 | g_loss: 2.8221
+Epoch [    3/   10] | d_loss: 0.4794 | g_loss: 1.8572
+Epoch [    3/   10] | d_loss: 0.4721 | g_loss: 2.7487
+Epoch [    3/   10] | d_loss: 1.2881 | g_loss: 0.6078
+Epoch [    3/   10] | d_loss: 0.8306 | g_loss: 1.6300
+Epoch [    3/   10] | d_loss: 0.4302 | g_loss: 2.5741
+Epoch [    3/   10] | d_loss: 0.4856 | g_loss: 2.8508
+Epoch [    3/   10] | d_loss: 1.0638 | g_loss: 1.2981
+Epoch [    3/   10] | d_loss: 1.2009 | g_loss: 2.4391
+Epoch [    3/   10] | d_loss: 0.5120 | g_loss: 0.8365
+Epoch [    3/   10] | d_loss: 1.0198 | g_loss: 1.5580
+Epoch [    3/   10] | d_loss: 0.8820 | g_loss: 2.1524
+Epoch [    3/   10] | d_loss: 0.8794 | g_loss: 1.9807
+Epoch [    3/   10] | d_loss: 1.2404 | g_loss: 1.5583
+Epoch [    3/   10] | d_loss: 0.5065 | g_loss: 1.5696
+Epoch [    3/   10] | d_loss: 0.7311 | g_loss: 2.3812
+Epoch [    3/   10] | d_loss: 0.7586 | g_loss: 1.6321
+Epoch [    3/   10] | d_loss: 1.1888 | g_loss: 3.0969
+Epoch [    3/   10] | d_loss: 0.6019 | g_loss: 1.3327
+Epoch [    3/   10] | d_loss: 0.9333 | g_loss: 1.7940
+Epoch [    3/   10] | d_loss: 0.9408 | g_loss: 3.4469
+Epoch [    3/   10] | d_loss: 0.4765 | g_loss: 1.4752
+Epoch [    3/   10] | d_loss: 0.5436 | g_loss: 2.0790
+Epoch [    3/   10] | d_loss: 0.8359 | g_loss: 1.3764
+Epoch [    3/   10] | d_loss: 0.8532 | g_loss: 3.2155
+Epoch [    3/   10] | d_loss: 0.8930 | g_loss: 1.4274
+Epoch [    3/   10] | d_loss: 0.7218 | g_loss: 2.5226
+Epoch [    3/   10] | d_loss: 0.5686 | g_loss: 1.5422
+Epoch [    3/   10] | d_loss: 0.9219 | g_loss: 1.8003
+Epoch [    3/   10] | d_loss: 1.2073 | g_loss: 0.9530
+Epoch [    3/   10] | d_loss: 0.8309 | g_loss: 1.0924
+Epoch [    3/   10] | d_loss: 0.8689 | g_loss: 1.7498
+Epoch [    3/   10] | d_loss: 1.1529 | g_loss: 0.9297
+Epoch [    3/   10] | d_loss: 0.8227 | g_loss: 1.6970
+Epoch [    3/   10] | d_loss: 0.5959 | g_loss: 1.0709
+Epoch [    3/   10] | d_loss: 0.8132 | g_loss: 2.8963
+Epoch [    3/   10] | d_loss: 1.2516 | g_loss: 1.1911
+Epoch [    3/   10] | d_loss: 0.9279 | g_loss: 1.3907
+Epoch [    3/   10] | d_loss: 1.0880 | g_loss: 2.5361
+Epoch [    3/   10] | d_loss: 0.8747 | g_loss: 2.5947
+Epoch [    3/   10] | d_loss: 1.0380 | g_loss: 1.3927
+Epoch [    3/   10] | d_loss: 0.8980 | g_loss: 1.9233
+Epoch [    3/   10] | d_loss: 0.9106 | g_loss: 2.5329
+Epoch [    3/   10] | d_loss: 0.5308 | g_loss: 2.5881
+Epoch [    3/   10] | d_loss: 1.0285 | g_loss: 0.8125
+Epoch [    3/   10] | d_loss: 0.7343 | g_loss: 2.8655
+Epoch [    3/   10] | d_loss: 0.7057 | g_loss: 1.7360
+Epoch [    3/   10] | d_loss: 0.5431 | g_loss: 1.2880
+Epoch [    4/   10] | d_loss: 0.8401 | g_loss: 1.4240
+Epoch [    4/   10] | d_loss: 0.8616 | g_loss: 2.2292
+Epoch [    4/   10] | d_loss: 0.8513 | g_loss: 0.8143
+Epoch [    4/   10] | d_loss: 0.9198 | g_loss: 2.0126
+Epoch [    4/   10] | d_loss: 0.7864 | g_loss: 0.7880
+Epoch [    4/   10] | d_loss: 0.6304 | g_loss: 2.2339
+Epoch [    4/   10] | d_loss: 0.9616 | g_loss: 1.9981
+Epoch [    4/   10] | d_loss: 0.9861 | g_loss: 3.1358
+Epoch [    4/   10] | d_loss: 0.6280 | g_loss: 2.0134
+Epoch [    4/   10] | d_loss: 0.4167 | g_loss: 1.8948
+Epoch [    4/   10] | d_loss: 0.9732 | g_loss: 1.7885
+Epoch [    4/   10] | d_loss: 1.3507 | g_loss: 3.3076
+Epoch [    4/   10] | d_loss: 0.8582 | g_loss: 2.4259
+Epoch [    4/   10] | d_loss: 0.3222 | g_loss: 1.3931
+Epoch [    4/   10] | d_loss: 0.3784 | g_loss: 2.0218
+Epoch [    4/   10] | d_loss: 0.5218 | g_loss: 3.1135
+Epoch [    4/   10] | d_loss: 1.2346 | g_loss: 1.9277
+Epoch [    4/   10] | d_loss: 0.8060 | g_loss: 2.9532
+Epoch [    4/   10] | d_loss: 0.5906 | g_loss: 3.2836
+Epoch [    4/   10] | d_loss: 0.3541 | g_loss: 2.9068
+Epoch [    4/   10] | d_loss: 0.9875 | g_loss: 0.9372
+Epoch [    4/   10] | d_loss: 0.6712 | g_loss: 2.4969
+Epoch [    4/   10] | d_loss: 0.6518 | g_loss: 1.6130
+Epoch [    4/   10] | d_loss: 0.5608 | g_loss: 2.5040
+Epoch [    4/   10] | d_loss: 0.8226 | g_loss: 1.6709
+Epoch [    4/   10] | d_loss: 0.4274 | g_loss: 1.9891
+Epoch [    4/   10] | d_loss: 0.9803 | g_loss: 1.1438
+Epoch [    4/   10] | d_loss: 0.6038 | g_loss: 2.0693
+Epoch [    4/   10] | d_loss: 0.7240 | g_loss: 1.6234
+Epoch [    4/   10] | d_loss: 1.1355 | g_loss: 2.6563
+Epoch [    4/   10] | d_loss: 0.6979 | g_loss: 1.5845
+Epoch [    4/   10] | d_loss: 0.6271 | g_loss: 2.4673
+Epoch [    4/   10] | d_loss: 0.8741 | g_loss: 3.4031
+Epoch [    4/   10] | d_loss: 0.8035 | g_loss: 1.0717
+Epoch [    4/   10] | d_loss: 0.5466 | g_loss: 3.6925
+Epoch [    4/   10] | d_loss: 0.7398 | g_loss: 1.3586
+Epoch [    4/   10] | d_loss: 0.9093 | g_loss: 1.7668
+Epoch [    4/   10] | d_loss: 0.9914 | g_loss: 2.2887
+Epoch [    4/   10] | d_loss: 0.6766 | g_loss: 3.2470
+Epoch [    4/   10] | d_loss: 0.9100 | g_loss: 2.9327
+Epoch [    4/   10] | d_loss: 0.4537 | g_loss: 1.7861
+Epoch [    4/   10] | d_loss: 0.7286 | g_loss: 2.2573
+Epoch [    4/   10] | d_loss: 0.7621 | g_loss: 1.6164
+Epoch [    4/   10] | d_loss: 0.6815 | g_loss: 2.1096
+Epoch [    4/   10] | d_loss: 0.5489 | g_loss: 1.9791
+Epoch [    4/   10] | d_loss: 0.4194 | g_loss: 2.2744
+Epoch [    4/   10] | d_loss: 0.5542 | g_loss: 1.8974
+Epoch [    4/   10] | d_loss: 0.5394 | g_loss: 2.2294
+Epoch [    4/   10] | d_loss: 0.5985 | g_loss: 2.3418
+Epoch [    4/   10] | d_loss: 0.7873 | g_loss: 2.4874
+Epoch [    4/   10] | d_loss: 0.5031 | g_loss: 2.3360
+Epoch [    4/   10] | d_loss: 0.6192 | g_loss: 1.5156
+Epoch [    4/   10] | d_loss: 1.2282 | g_loss: 0.9613
+Epoch [    4/   10] | d_loss: 0.7149 | g_loss: 3.4017
+Epoch [    4/   10] | d_loss: 0.6998 | g_loss: 1.7441
+Epoch [    4/   10] | d_loss: 0.2832 | g_loss: 2.7605
+Epoch [    4/   10] | d_loss: 0.4165 | g_loss: 2.6288
+Epoch [    5/   10] | d_loss: 1.1319 | g_loss: 2.9711
+Epoch [    5/   10] | d_loss: 0.8193 | g_loss: 1.6927
+Epoch [    5/   10] | d_loss: 0.6316 | g_loss: 2.9231
+Epoch [    5/   10] | d_loss: 0.8828 | g_loss: 2.3579
+Epoch [    5/   10] | d_loss: 0.7815 | g_loss: 0.9519
+Epoch [    5/   10] | d_loss: 0.6774 | g_loss: 1.9494
+Epoch [    5/   10] | d_loss: 0.5645 | g_loss: 2.0426
+Epoch [    5/   10] | d_loss: 0.4826 | g_loss: 1.4202
+Epoch [    5/   10] | d_loss: 0.9609 | g_loss: 1.2853
+Epoch [    5/   10] | d_loss: 0.6564 | g_loss: 0.6472
+Epoch [    5/   10] | d_loss: 0.7649 | g_loss: 2.5583
+Epoch [    5/   10] | d_loss: 0.8553 | g_loss: 2.9331
+Epoch [    5/   10] | d_loss: 0.9975 | g_loss: 3.8976
+Epoch [    5/   10] | d_loss: 0.9121 | g_loss: 1.9868
+Epoch [    5/   10] | d_loss: 1.0603 | g_loss: 0.9347
+Epoch [    5/   10] | d_loss: 0.5517 | g_loss: 2.0222
+Epoch [    5/   10] | d_loss: 0.8386 | g_loss: 1.4041
+Epoch [    5/   10] | d_loss: 0.8956 | g_loss: 2.2966
+Epoch [    5/   10] | d_loss: 0.5073 | g_loss: 2.2514
+Epoch [    5/   10] | d_loss: 0.6612 | g_loss: 1.8508
+Epoch [    5/   10] | d_loss: 0.4714 | g_loss: 1.4664
+Epoch [    5/   10] | d_loss: 0.4838 | g_loss: 1.4921
+Epoch [    5/   10] | d_loss: 0.5782 | g_loss: 2.1109
+Epoch [    5/   10] | d_loss: 0.7387 | g_loss: 2.9436
+Epoch [    5/   10] | d_loss: 0.6819 | g_loss: 0.8043
+Epoch [    5/   10] | d_loss: 0.4835 | g_loss: 3.2234
+Epoch [    5/   10] | d_loss: 0.3402 | g_loss: 2.0674
+Epoch [    5/   10] | d_loss: 0.4534 | g_loss: 3.4563
+Epoch [    5/   10] | d_loss: 0.5540 | g_loss: 1.1556
+Epoch [    5/   10] | d_loss: 0.7765 | g_loss: 1.2208
+Epoch [    5/   10] | d_loss: 1.0301 | g_loss: 1.1580
+Epoch [    5/   10] | d_loss: 0.6595 | g_loss: 1.4798
+Epoch [    5/   10] | d_loss: 0.7811 | g_loss: 2.1072
+Epoch [    5/   10] | d_loss: 0.8951 | g_loss: 2.2031
+Epoch [    5/   10] | d_loss: 0.6046 | g_loss: 3.0415
+Epoch [    5/   10] | d_loss: 0.3505 | g_loss: 3.3982
+Epoch [    5/   10] | d_loss: 0.8029 | g_loss: 2.2610
+Epoch [    5/   10] | d_loss: 0.6194 | g_loss: 2.2170
+Epoch [    5/   10] | d_loss: 0.8113 | g_loss: 2.6177
+Epoch [    5/   10] | d_loss: 0.3110 | g_loss: 1.6645
+Epoch [    5/   10] | d_loss: 0.6087 | g_loss: 1.7842
+Epoch [    5/   10] | d_loss: 0.5965 | g_loss: 1.0506
+Epoch [    5/   10] | d_loss: 0.6210 | g_loss: 1.7927
+Epoch [    5/   10] | d_loss: 0.7243 | g_loss: 3.9066
+Epoch [    5/   10] | d_loss: 0.6715 | g_loss: 2.7507
+Epoch [    5/   10] | d_loss: 0.5632 | g_loss: 2.4817
+Epoch [    5/   10] | d_loss: 0.6050 | g_loss: 1.5578
+Epoch [    5/   10] | d_loss: 0.3460 | g_loss: 2.9607
+Epoch [    5/   10] | d_loss: 0.6075 | g_loss: 2.7551
+Epoch [    5/   10] | d_loss: 0.8077 | g_loss: 1.5106
+Epoch [    5/   10] | d_loss: 0.4638 | g_loss: 1.6624
+Epoch [    5/   10] | d_loss: 1.2398 | g_loss: 0.6678
+Epoch [    5/   10] | d_loss: 1.2159 | g_loss: 3.4430
+Epoch [    5/   10] | d_loss: 0.6071 | g_loss: 2.7914
+Epoch [    5/   10] | d_loss: 0.4359 | g_loss: 2.0077
+Epoch [    5/   10] | d_loss: 0.7977 | g_loss: 2.0437
+Epoch [    5/   10] | d_loss: 0.4534 | g_loss: 3.0467
+Epoch [    6/   10] | d_loss: 0.6131 | g_loss: 1.6626
+Epoch [    6/   10] | d_loss: 0.4299 | g_loss: 2.2227
+Epoch [    6/   10] | d_loss: 0.3006 | g_loss: 0.7026
+Epoch [    6/   10] | d_loss: 0.1854 | g_loss: 2.6362
+Epoch [    6/   10] | d_loss: 0.5243 | g_loss: 2.2669
+Epoch [    6/   10] | d_loss: 0.6989 | g_loss: 1.7068
+Epoch [    6/   10] | d_loss: 0.4597 | g_loss: 1.4009
+Epoch [    6/   10] | d_loss: 0.9632 | g_loss: 1.0400
+Epoch [    6/   10] | d_loss: 1.3017 | g_loss: 0.9841
+Epoch [    6/   10] | d_loss: 0.4176 | g_loss: 2.6286
+Epoch [    6/   10] | d_loss: 0.4484 | g_loss: 1.8289
+Epoch [    6/   10] | d_loss: 0.4174 | g_loss: 1.4095
+Epoch [    6/   10] | d_loss: 0.7201 | g_loss: 1.3313
+Epoch [    6/   10] | d_loss: 0.2836 | g_loss: 0.5963
+Epoch [    6/   10] | d_loss: 0.3262 | g_loss: 2.7093
+Epoch [    6/   10] | d_loss: 0.5079 | g_loss: 1.6562
+Epoch [    6/   10] | d_loss: 0.5641 | g_loss: 2.6865
+Epoch [    6/   10] | d_loss: 0.4018 | g_loss: 3.5414
+Epoch [    6/   10] | d_loss: 0.7538 | g_loss: 1.3195
+Epoch [    6/   10] | d_loss: 0.6896 | g_loss: 2.3884
+Epoch [    6/   10] | d_loss: 0.5189 | g_loss: 2.3032
+Epoch [    6/   10] | d_loss: 0.9189 | g_loss: 1.8686
+Epoch [    6/   10] | d_loss: 0.4986 | g_loss: 3.0515
+Epoch [    6/   10] | d_loss: 0.3765 | g_loss: 2.6408
+Epoch [    6/   10] | d_loss: 1.4173 | g_loss: 0.8775
+Epoch [    6/   10] | d_loss: 0.5607 | g_loss: 2.1340
+Epoch [    6/   10] | d_loss: 0.8014 | g_loss: 2.4330
+Epoch [    6/   10] | d_loss: 0.5984 | g_loss: 0.9653
+Epoch [    6/   10] | d_loss: 0.6888 | g_loss: 1.7870
+Epoch [    6/   10] | d_loss: 0.2652 | g_loss: 3.0309
+Epoch [    6/   10] | d_loss: 0.4509 | g_loss: 1.8343
+Epoch [    6/   10] | d_loss: 0.8102 | g_loss: 2.9208
+Epoch [    6/   10] | d_loss: 0.5327 | g_loss: 2.4754
+Epoch [    6/   10] | d_loss: 0.4832 | g_loss: 2.7773
+Epoch [    6/   10] | d_loss: 0.5500 | g_loss: 3.3042
+Epoch [    6/   10] | d_loss: 0.5702 | g_loss: 3.2377
+Epoch [    6/   10] | d_loss: 0.7310 | g_loss: 1.1722
+Epoch [    6/   10] | d_loss: 0.5023 | g_loss: 2.2215
+Epoch [    6/   10] | d_loss: 0.8471 | g_loss: 3.6402
+Epoch [    6/   10] | d_loss: 0.5849 | g_loss: 2.6509
+Epoch [    6/   10] | d_loss: 0.3653 | g_loss: 2.6616
+Epoch [    6/   10] | d_loss: 0.3248 | g_loss: 1.9398
+Epoch [    6/   10] | d_loss: 0.9223 | g_loss: 4.0499
+Epoch [    6/   10] | d_loss: 0.6721 | g_loss: 3.2913
+Epoch [    6/   10] | d_loss: 0.7161 | g_loss: 1.5024
+Epoch [    6/   10] | d_loss: 0.4479 | g_loss: 2.5791
+Epoch [    6/   10] | d_loss: 0.5212 | g_loss: 1.7683
+Epoch [    6/   10] | d_loss: 0.5045 | g_loss: 1.3497
+Epoch [    6/   10] | d_loss: 0.6152 | g_loss: 1.1267
+Epoch [    6/   10] | d_loss: 0.5551 | g_loss: 1.5158
+Epoch [    6/   10] | d_loss: 0.4587 | g_loss: 1.8742
+Epoch [    6/   10] | d_loss: 0.6807 | g_loss: 2.9760
+Epoch [    6/   10] | d_loss: 0.5110 | g_loss: 2.5312
+Epoch [    6/   10] | d_loss: 0.8837 | g_loss: 3.1058
+Epoch [    6/   10] | d_loss: 0.3380 | g_loss: 4.4900
+Epoch [    6/   10] | d_loss: 0.6072 | g_loss: 3.4840
+Epoch [    6/   10] | d_loss: 0.4818 | g_loss: 0.8018
+Epoch [    7/   10] | d_loss: 0.3787 | g_loss: 3.2713
+Epoch [    7/   10] | d_loss: 0.4111 | g_loss: 2.1725
+Epoch [    7/   10] | d_loss: 0.6174 | g_loss: 2.1986
+Epoch [    7/   10] | d_loss: 0.4450 | g_loss: 2.6382
+Epoch [    7/   10] | d_loss: 0.3990 | g_loss: 3.3629
+Epoch [    7/   10] | d_loss: 0.3088 | g_loss: 2.7460
+Epoch [    7/   10] | d_loss: 0.4958 | g_loss: 1.6353
+Epoch [    7/   10] | d_loss: 0.6304 | g_loss: 2.3534
+Epoch [    7/   10] | d_loss: 0.2532 | g_loss: 4.5817
+Epoch [    7/   10] | d_loss: 0.6479 | g_loss: 3.0984
+Epoch [    7/   10] | d_loss: 0.5513 | g_loss: 3.4089
+Epoch [    7/   10] | d_loss: 0.3134 | g_loss: 2.6342
+Epoch [    7/   10] | d_loss: 0.3460 | g_loss: 1.7633
+Epoch [    7/   10] | d_loss: 0.6270 | g_loss: 1.3131
+Epoch [    7/   10] | d_loss: 0.4562 | g_loss: 1.2855
+Epoch [    7/   10] | d_loss: 0.6967 | g_loss: 3.7443
+Epoch [    7/   10] | d_loss: 0.3883 | g_loss: 1.1247
+Epoch [    7/   10] | d_loss: 1.1162 | g_loss: 1.4496
+Epoch [    7/   10] | d_loss: 0.6862 | g_loss: 1.9642
+Epoch [    7/   10] | d_loss: 0.7530 | g_loss: 2.4123
+Epoch [    7/   10] | d_loss: 0.7394 | g_loss: 0.2484
+Epoch [    7/   10] | d_loss: 0.6291 | g_loss: 1.7968
+Epoch [    7/   10] | d_loss: 1.1447 | g_loss: 0.4640
+Epoch [    7/   10] | d_loss: 0.4903 | g_loss: 1.3460
+Epoch [    7/   10] | d_loss: 0.5742 | g_loss: 2.7956
+Epoch [    7/   10] | d_loss: 0.6709 | g_loss: 2.9093
+Epoch [    7/   10] | d_loss: 0.1588 | g_loss: 3.7518
+Epoch [    7/   10] | d_loss: 0.3172 | g_loss: 2.7774
+Epoch [    7/   10] | d_loss: 0.5264 | g_loss: 2.1130
+Epoch [    7/   10] | d_loss: 0.7936 | g_loss: 2.6904
+Epoch [    7/   10] | d_loss: 0.2563 | g_loss: 1.9693
+Epoch [    7/   10] | d_loss: 0.6558 | g_loss: 1.7162
+Epoch [    7/   10] | d_loss: 0.3564 | g_loss: 1.8198
+Epoch [    7/   10] | d_loss: 0.4630 | g_loss: 2.8980
+Epoch [    7/   10] | d_loss: 0.8806 | g_loss: 0.8306
+Epoch [    7/   10] | d_loss: 0.3239 | g_loss: 1.6085
+Epoch [    7/   10] | d_loss: 0.4486 | g_loss: 2.5150
+Epoch [    7/   10] | d_loss: 0.8813 | g_loss: 1.4289
+Epoch [    7/   10] | d_loss: 0.3901 | g_loss: 3.3365
+Epoch [    7/   10] | d_loss: 0.1809 | g_loss: 2.6817
+Epoch [    7/   10] | d_loss: 0.3283 | g_loss: 1.8781
+Epoch [    7/   10] | d_loss: 0.7115 | g_loss: 2.0561
+Epoch [    7/   10] | d_loss: 0.4457 | g_loss: 2.0092
+Epoch [    7/   10] | d_loss: 0.6913 | g_loss: 2.0837
+Epoch [    7/   10] | d_loss: 0.3181 | g_loss: 1.7014
+Epoch [    7/   10] | d_loss: 0.4084 | g_loss: 1.0058
+Epoch [    7/   10] | d_loss: 0.2859 | g_loss: 2.8504
+Epoch [    7/   10] | d_loss: 0.2003 | g_loss: 2.5487
+Epoch [    7/   10] | d_loss: 1.1387 | g_loss: 1.0666
+Epoch [    7/   10] | d_loss: 0.6104 | g_loss: 2.0029
+Epoch [    7/   10] | d_loss: 0.4825 | g_loss: 2.1227
+Epoch [    7/   10] | d_loss: 0.4514 | g_loss: 2.6752
+Epoch [    7/   10] | d_loss: 1.2751 | g_loss: 2.3475
+Epoch [    7/   10] | d_loss: 0.8994 | g_loss: 3.8799
+Epoch [    7/   10] | d_loss: 0.3868 | g_loss: 2.2264
+Epoch [    7/   10] | d_loss: 0.3284 | g_loss: 1.9207
+Epoch [    7/   10] | d_loss: 0.3513 | g_loss: 2.3701
+Epoch [    8/   10] | d_loss: 0.3545 | g_loss: 1.5507
+Epoch [    8/   10] | d_loss: 0.2104 | g_loss: 3.5212
+Epoch [    8/   10] | d_loss: 0.5248 | g_loss: 2.2367
+Epoch [    8/   10] | d_loss: 0.4900 | g_loss: 4.0762
+Epoch [    8/   10] | d_loss: 0.4916 | g_loss: 3.2304
+Epoch [    8/   10] | d_loss: 0.2471 | g_loss: 1.7792
+Epoch [    8/   10] | d_loss: 0.6362 | g_loss: 3.2936
+Epoch [    8/   10] | d_loss: 0.5648 | g_loss: 2.2958
+Epoch [    8/   10] | d_loss: 0.3065 | g_loss: 3.9343
+Epoch [    8/   10] | d_loss: 0.5667 | g_loss: 2.6154
+Epoch [    8/   10] | d_loss: 0.2314 | g_loss: 1.7458
+Epoch [    8/   10] | d_loss: 0.2667 | g_loss: 2.6632
+Epoch [    8/   10] | d_loss: 1.0024 | g_loss: 3.9373
+Epoch [    8/   10] | d_loss: 0.2404 | g_loss: 1.8878
+Epoch [    8/   10] | d_loss: 0.6905 | g_loss: 2.8458
+Epoch [    8/   10] | d_loss: 0.2784 | g_loss: 2.5856
+Epoch [    8/   10] | d_loss: 0.5212 | g_loss: 2.4392
+Epoch [    8/   10] | d_loss: 0.4670 | g_loss: 2.4646
+Epoch [    8/   10] | d_loss: 1.0045 | g_loss: 4.2842
+Epoch [    8/   10] | d_loss: 0.2298 | g_loss: 4.3155
+Epoch [    8/   10] | d_loss: 0.2212 | g_loss: 2.6108
+Epoch [    8/   10] | d_loss: 0.3668 | g_loss: 2.5877
+Epoch [    8/   10] | d_loss: 0.7712 | g_loss: 3.1950
+Epoch [    8/   10] | d_loss: 0.3119 | g_loss: 1.8850
+Epoch [    8/   10] | d_loss: 0.2629 | g_loss: 2.6502
+Epoch [    8/   10] | d_loss: 0.2770 | g_loss: 1.8937
+Epoch [    8/   10] | d_loss: 0.4351 | g_loss: 2.0899
+Epoch [    8/   10] | d_loss: 0.2559 | g_loss: 2.8211
+Epoch [    8/   10] | d_loss: 0.9524 | g_loss: 1.7890
+Epoch [    8/   10] | d_loss: 0.3591 | g_loss: 3.1456
+Epoch [    8/   10] | d_loss: 0.5351 | g_loss: 1.7695
+Epoch [    8/   10] | d_loss: 0.9661 | g_loss: 4.8195
+Epoch [    8/   10] | d_loss: 0.4399 | g_loss: 3.0966
+Epoch [    8/   10] | d_loss: 0.7260 | g_loss: 2.5558
+Epoch [    8/   10] | d_loss: 0.3313 | g_loss: 2.9619
+Epoch [    8/   10] | d_loss: 0.4049 | g_loss: 2.5061
+Epoch [    8/   10] | d_loss: 0.7257 | g_loss: 3.5069
+Epoch [    8/   10] | d_loss: 0.5488 | g_loss: 2.5658
+Epoch [    8/   10] | d_loss: 0.5171 | g_loss: 2.5113
+Epoch [    8/   10] | d_loss: 0.2932 | g_loss: 2.5040
+Epoch [    8/   10] | d_loss: 0.4522 | g_loss: 2.6739
+Epoch [    8/   10] | d_loss: 0.5376 | g_loss: 2.9858
+Epoch [    8/   10] | d_loss: 0.5467 | g_loss: 1.6005
+Epoch [    8/   10] | d_loss: 0.3488 | g_loss: 2.6331
+Epoch [    8/   10] | d_loss: 0.5938 | g_loss: 0.8402
+Epoch [    8/   10] | d_loss: 0.1440 | g_loss: 1.7671
+Epoch [    8/   10] | d_loss: 0.4936 | g_loss: 2.6844
+Epoch [    8/   10] | d_loss: 0.7796 | g_loss: 1.9666
+Epoch [    8/   10] | d_loss: 0.3242 | g_loss: 3.2707
+Epoch [    8/   10] | d_loss: 0.3156 | g_loss: 2.2630
+Epoch [    8/   10] | d_loss: 1.4755 | g_loss: 1.0196
+Epoch [    8/   10] | d_loss: 0.3777 | g_loss: 2.7318
+Epoch [    8/   10] | d_loss: 0.3318 | g_loss: 2.6214
+Epoch [    8/   10] | d_loss: 0.6964 | g_loss: 1.4799
+Epoch [    8/   10] | d_loss: 0.6144 | g_loss: 3.8209
+Epoch [    8/   10] | d_loss: 0.5881 | g_loss: 2.3210
+Epoch [    8/   10] | d_loss: 0.3095 | g_loss: 3.3764
+Epoch [    9/   10] | d_loss: 0.7958 | g_loss: 2.0137
+Epoch [    9/   10] | d_loss: 1.1180 | g_loss: 4.9843
+Epoch [    9/   10] | d_loss: 0.3233 | g_loss: 2.2818
+Epoch [    9/   10] | d_loss: 0.4081 | g_loss: 1.6872
+Epoch [    9/   10] | d_loss: 0.1328 | g_loss: 1.7398
+Epoch [    9/   10] | d_loss: 0.3839 | g_loss: 3.1949
+Epoch [    9/   10] | d_loss: 0.3956 | g_loss: 3.4710
+Epoch [    9/   10] | d_loss: 0.4662 | g_loss: 2.0692
+Epoch [    9/   10] | d_loss: 0.1396 | g_loss: 2.1416
+Epoch [    9/   10] | d_loss: 0.7033 | g_loss: 4.5267
+Epoch [    9/   10] | d_loss: 0.3810 | g_loss: 2.4842
+Epoch [    9/   10] | d_loss: 0.8668 | g_loss: 3.4257
+Epoch [    9/   10] | d_loss: 0.8092 | g_loss: 2.0416
+Epoch [    9/   10] | d_loss: 0.1970 | g_loss: 2.4944
+Epoch [    9/   10] | d_loss: 0.3658 | g_loss: 1.3878
+Epoch [    9/   10] | d_loss: 0.5938 | g_loss: 4.3212
+Epoch [    9/   10] | d_loss: 0.6824 | g_loss: 3.0047
+Epoch [    9/   10] | d_loss: 0.4710 | g_loss: 2.3355
+Epoch [    9/   10] | d_loss: 0.4070 | g_loss: 2.6194
+Epoch [    9/   10] | d_loss: 0.6451 | g_loss: 3.7926
+Epoch [    9/   10] | d_loss: 0.4403 | g_loss: 2.0283
+Epoch [    9/   10] | d_loss: 0.3301 | g_loss: 3.2711
+Epoch [    9/   10] | d_loss: 0.5004 | g_loss: 3.1164
+Epoch [    9/   10] | d_loss: 0.2670 | g_loss: 4.5862
+Epoch [    9/   10] | d_loss: 0.3445 | g_loss: 2.5394
+Epoch [    9/   10] | d_loss: 0.4404 | g_loss: 2.4993
+Epoch [    9/   10] | d_loss: 0.2074 | g_loss: 3.8929
+Epoch [    9/   10] | d_loss: 0.3747 | g_loss: 2.8142
+Epoch [    9/   10] | d_loss: 0.3066 | g_loss: 2.4967
+Epoch [    9/   10] | d_loss: 0.3258 | g_loss: 2.8470
+Epoch [    9/   10] | d_loss: 0.2147 | g_loss: 3.2469
+Epoch [    9/   10] | d_loss: 0.1356 | g_loss: 4.4160
+Epoch [    9/   10] | d_loss: 0.1353 | g_loss: 3.1965
+Epoch [    9/   10] | d_loss: 0.6778 | g_loss: 4.4086
+Epoch [    9/   10] | d_loss: 0.3097 | g_loss: 1.4800
+Epoch [    9/   10] | d_loss: 0.3600 | g_loss: 1.2397
+Epoch [    9/   10] | d_loss: 0.5439 | g_loss: 4.4019
+Epoch [    9/   10] | d_loss: 0.2376 | g_loss: 2.5645
+Epoch [    9/   10] | d_loss: 1.0602 | g_loss: 4.8398
+Epoch [    9/   10] | d_loss: 0.1502 | g_loss: 3.6295
+Epoch [    9/   10] | d_loss: 0.3918 | g_loss: 4.1729
+Epoch [    9/   10] | d_loss: 0.3563 | g_loss: 2.6311
+Epoch [    9/   10] | d_loss: 0.3923 | g_loss: 2.1126
+Epoch [    9/   10] | d_loss: 0.2049 | g_loss: 3.7298
+Epoch [    9/   10] | d_loss: 1.0741 | g_loss: 2.4022
+Epoch [    9/   10] | d_loss: 0.1391 | g_loss: 2.6011
+Epoch [    9/   10] | d_loss: 1.1179 | g_loss: 1.7936
+Epoch [    9/   10] | d_loss: 0.3378 | g_loss: 2.3964
+Epoch [    9/   10] | d_loss: 0.2668 | g_loss: 3.0656
+Epoch [    9/   10] | d_loss: 0.0952 | g_loss: 3.2094
+Epoch [    9/   10] | d_loss: 0.2538 | g_loss: 3.7583
+Epoch [    9/   10] | d_loss: 0.3544 | g_loss: 1.5199
+Epoch [    9/   10] | d_loss: 0.5133 | g_loss: 3.7610
+Epoch [    9/   10] | d_loss: 0.5193 | g_loss: 4.1392
+Epoch [    9/   10] | d_loss: 0.5395 | g_loss: 5.6215
+Epoch [    9/   10] | d_loss: 0.3722 | g_loss: 2.2540
+Epoch [    9/   10] | d_loss: 0.3496 | g_loss: 3.0168
+Epoch [   10/   10] | d_loss: 0.1506 | g_loss: 3.1284
+Epoch [   10/   10] | d_loss: 0.5005 | g_loss: 2.7923
+Epoch [   10/   10] | d_loss: 0.2329 | g_loss: 4.3172
+Epoch [   10/   10] | d_loss: 0.2920 | g_loss: 2.8481
+Epoch [   10/   10] | d_loss: 0.4869 | g_loss: 2.7364
+Epoch [   10/   10] | d_loss: 0.3645 | g_loss: 1.3832
+Epoch [   10/   10] | d_loss: 0.2958 | g_loss: 4.2701
+Epoch [   10/   10] | d_loss: 0.2752 | g_loss: 4.2040
+Epoch [   10/   10] | d_loss: 0.3000 | g_loss: 2.0245
+Epoch [   10/   10] | d_loss: 0.1832 | g_loss: 3.6009
+Epoch [   10/   10] | d_loss: 0.6361 | g_loss: 3.0735
+Epoch [   10/   10] | d_loss: 0.4378 | g_loss: 3.5753
+Epoch [   10/   10] | d_loss: 0.7674 | g_loss: 1.6762
+Epoch [   10/   10] | d_loss: 0.0906 | g_loss: 2.8359
+Epoch [   10/   10] | d_loss: 0.2643 | g_loss: 3.0888
+Epoch [   10/   10] | d_loss: 0.2865 | g_loss: 5.3736
+Epoch [   10/   10] | d_loss: 0.1423 | g_loss: 2.6674
+Epoch [   10/   10] | d_loss: 0.3027 | g_loss: 1.9178
+Epoch [   10/   10] | d_loss: 0.0606 | g_loss: 2.7456
+Epoch [   10/   10] | d_loss: 0.2992 | g_loss: 2.0044
+Epoch [   10/   10] | d_loss: 0.0929 | g_loss: 2.7819
+Epoch [   10/   10] | d_loss: 0.5342 | g_loss: 3.5143
+Epoch [   10/   10] | d_loss: 0.5569 | g_loss: 2.7988
+Epoch [   10/   10] | d_loss: 0.5476 | g_loss: 4.1120
+Epoch [   10/   10] | d_loss: 0.4387 | g_loss: 3.9358
+Epoch [   10/   10] | d_loss: 0.2141 | g_loss: 3.2421
+Epoch [   10/   10] | d_loss: 0.3969 | g_loss: 2.3368
+Epoch [   10/   10] | d_loss: 0.6126 | g_loss: 2.3273
+Epoch [   10/   10] | d_loss: 0.3728 | g_loss: 4.0061
+Epoch [   10/   10] | d_loss: 0.1637 | g_loss: 2.8562
+Epoch [   10/   10] | d_loss: 0.3026 | g_loss: 4.2510
+Epoch [   10/   10] | d_loss: 0.9926 | g_loss: 1.6901
+Epoch [   10/   10] | d_loss: 0.4880 | g_loss: 3.0351
+Epoch [   10/   10] | d_loss: 0.5228 | g_loss: 1.2235
+Epoch [   10/   10] | d_loss: 0.8631 | g_loss: 5.2191
+Epoch [   10/   10] | d_loss: 0.2152 | g_loss: 5.0519
+Epoch [   10/   10] | d_loss: 0.3977 | g_loss: 3.8114
+Epoch [   10/   10] | d_loss: 2.2134 | g_loss: 4.7074
+Epoch [   10/   10] | d_loss: 0.3417 | g_loss: 2.9938
+Epoch [   10/   10] | d_loss: 0.9200 | g_loss: 2.3087
+Epoch [   10/   10] | d_loss: 0.4359 | g_loss: 1.9508
+Epoch [   10/   10] | d_loss: 0.2884 | g_loss: 3.0795
+Epoch [   10/   10] | d_loss: 0.1838 | g_loss: 3.2346
+Epoch [   10/   10] | d_loss: 0.1815 | g_loss: 2.5961
+Epoch [   10/   10] | d_loss: 0.3024 | g_loss: 3.3063
+Epoch [   10/   10] | d_loss: 0.6810 | g_loss: 2.7535
+Epoch [   10/   10] | d_loss: 0.6004 | g_loss: 3.7914
+Epoch [   10/   10] | d_loss: 0.3055 | g_loss: 4.7553
+Epoch [   10/   10] | d_loss: 0.3839 | g_loss: 2.9566
+Epoch [   10/   10] | d_loss: 0.5230 | g_loss: 2.2097
+Epoch [   10/   10] | d_loss: 0.1586 | g_loss: 1.2258
+Epoch [   10/   10] | d_loss: 0.5196 | g_loss: 3.2109
+Epoch [   10/   10] | d_loss: 0.1643 | g_loss: 3.9196
+Epoch [   10/   10] | d_loss: 0.1626 | g_loss: 2.8338
+Epoch [   10/   10] | d_loss: 0.1378 | g_loss: 2.6072
+Epoch [   10/   10] | d_loss: 0.3793 | g_loss: 4.5483
+Epoch [   10/   10] | d_loss: 0.2544 | g_loss: 3.4693
+</code></pre></div></div>
+
+<h2 id="training-loss">Training loss</h2>
+
+<p>Plot the training losses for the generator and discriminator, recorded after each epoch.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">()</span>
+<span class="n">losses</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">'Discriminator'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">'Generator'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="s">"Training Losses"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.legend.Legend at 0x7f13f004a128&gt;
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_38_1.png" alt="png" /></p>
+
+<h2 id="generator-samples-from-training">Generator samples from training</h2>
+
+<p>View samples of images from the generator, and answer a question about the strengths and weaknesses of your trained models.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># helper function for viewing a list of passed in sample images
+</span><span class="k">def</span> <span class="nf">view_samples</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">samples</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nf">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(),</span> <span class="n">samples</span><span class="p">[</span><span class="n">epoch</span><span class="p">]):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="nf">detach</span><span class="p">().</span><span class="nf">cpu</span><span class="p">().</span><span class="nf">numpy</span><span class="p">()</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">transpose</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="p">((</span><span class="n">img</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">255</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="p">)).</span><span class="nf">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">.</span><span class="n">xaxis</span><span class="p">.</span><span class="nf">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">.</span><span class="n">yaxis</span><span class="p">.</span><span class="nf">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="nf">reshape</span><span class="p">((</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load samples from generator, taken while training
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="s">'train_samples.pkl'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">pkl</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_</span> <span class="o">=</span> <span class="nf">view_samples</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">samples</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_42_0.png" alt="png" /></p>
+
+<h3 id="question-what-do-you-notice-about-your-generated-samples-and-how-might-you-improve-this-model">Question: What do you notice about your generated samples and how might you improve this model?</h3>
+<p>When you answer this question, consider the following factors:</p>
+<ul>
+  <li>The dataset is biased; it is made of “celebrity” faces that are mostly white</li>
+  <li>Model size; larger models have the opportunity to learn more features in a data feature space</li>
+  <li>Optimization strategy; optimizers and number of epochs affect your final result</li>
+</ul>
+
+<p><strong>Answer:</strong></p>
+<ol>
+  <li>At the end of 10 iteration,it’s clear that the discriminator is performing better than the generator.The facial features are a bit complex even for a model with 4 convolutions.</li>
+  <li>Increasing the convolution layers and the no. of epochs for the current setting can give better results.</li>
+  <li>I’m a bit hesistant to tweak the hyperparameters since the gans are sensitive to hyperparameters so I went with the default parameters mentioned in the paper.</li>
+  <li>Using a different optimizer could also produce better results.</li>
+</ol>
+
+				</div>
+				
+			</div>
+			<div class="col-lg-4">
+  <div class="widget search-box">
+    <form action="/search.html" method="get">
+      <i class="ti-search"></i>
+      <input type="search" id="search-box" class="form-control border-0 pl-5" name="query" placeholder="Search">
+    </form>
+  </div>
+  <div class="widget">
+    <h6 class="mb-4">LATEST POST</h6>
+    
+    <div class="media mb-4">
+      <div class="post-thumb-sm mr-3">
+        <img class="img-fluid" src="/assets/images/masonary-post/sentiment-analysis.jpg" alt="Sentiment Analysis on AWS SageMaker">
+      </div>
+      <div class="media-body">
+        <ul class="list-inline d-flex justify-content-between mb-2">
+          <li class="list-inline-item">Post By Shrikant</li>
+          <li class="list-inline-item">June 25, 2020</li>
+        </ul>
+        <h6><a class="text-dark" href="/deep%20learning/2020/06/25/sentiment-analysis-on-aws-sagemaker/">Sentiment Analysis on AWS SageMaker</a></h6>
+      </div>
+    </div>
+    
+    <div class="media mb-4">
+      <div class="post-thumb-sm mr-3">
+        <img class="img-fluid" src="/assets/images/masonary-post/face-gen.jpg" alt="Face Generation with GAN">
+      </div>
+      <div class="media-body">
+        <ul class="list-inline d-flex justify-content-between mb-2">
+          <li class="list-inline-item">Post By Shrikant</li>
+          <li class="list-inline-item">June 14, 2020</li>
+        </ul>
+        <h6><a class="text-dark" href="/deep%20learning/2020/06/14/face-generation/">Face Generation with GAN</a></h6>
+      </div>
+    </div>
+    
+    <div class="media mb-4">
+      <div class="post-thumb-sm mr-3">
+        <img class="img-fluid" src="/assets/images/masonary-post/tv-scripts.jpg" alt="Generate TV Scripts">
+      </div>
+      <div class="media-body">
+        <ul class="list-inline d-flex justify-content-between mb-2">
+          <li class="list-inline-item">Post By Shrikant</li>
+          <li class="list-inline-item">June 8, 2020</li>
+        </ul>
+        <h6><a class="text-dark" href="/deep%20learning/2020/06/08/tv-script-generation/">Generate TV Scripts</a></h6>
+      </div>
+    </div>
+    
+  </div>
+  <div class="widget">
+    <h6 class="mb-4">CATEGORIES</h6>
+    <ul class="list-inline tag-list">
+      
+      <li class="list-inline-item m-1"><a href="/category/nature">Nature</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/article">Article</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/fashion">Fashion</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/philosophy">Philosophy</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/lifestyle">Lifestyle</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/food">Food</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/deep-learning">Deep Learning</a></li>
+      
+      
+    </ul>
+  </div>
+</div>
+		</div>
+	</div>
+</section>
+<!-- /blog single -->
+
+
+  <footer class="bg-secondary">
+  <div class="section">
+    <div class="container">
+      <div class="row">
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <a href="/"><img src="/assets/images/s-logo.png" alt="Shrikant Naidu" class="img-fluid"></a>
+        </div>
+        
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <h6>Address</h6>
+          <ul class="list-unstyled">
+            <li class="font-secondary text-dark">Mumbai</li>
+            <li class="font-secondary text-dark"></li>
+          </ul>
+        </div>
+        
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <h6>Contact Info</h6>
+          <ul class="list-unstyled">
+            <li class="font-secondary text-dark">Tel: </li>
+            <li class="font-secondary text-dark">Mail: shrikantnaidu777@gmail.com</li>
+          </ul>
+        </div>
+        
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <h6>Follow</h6>
+          <ul class="list-inline d-inline-block">
+            
+            <li class="list-inline-item"><a href="https://www.linkedin.com/in/shrikant-naidu/" class="text-dark"><i class="ti-linkedin"></i></a></li>
+            
+            <li class="list-inline-item"><a href="https://github.com/shrikantnaidu" class="text-dark"><i class="ti-github"></i></a></li>
+            
+            <li class="list-inline-item"><a href="https://twitter.com/sk_dataholic" class="text-dark"><i class="ti-twitter-alt"></i></a></li>
+            
+            <li class="list-inline-item"><a href="https://www.instagram.com/sk.barcaholic/" class="text-dark"><i class="ti-instagram"></i></a></li>
+            
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="text-center pb-3"><p>Copyright 2023 Designed by <a href="https://themefisher.com">Themefisher</a> &amp; Developed by <a href="https://gethugothemes.com">Gethugothemes</a></p>
+</div>
+</footer>
+
+  <!-- jQuery -->
+  <script src="/assets/plugins/jQuery/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="/assets/plugins/bootstrap/bootstrap.min.js"></script>
+  <!-- slick slider -->
+  <script src="/assets/plugins/slick/slick.min.js"></script>
+  <!-- masonry -->
+  <script src="/assets/plugins/masonry/masonry.js"></script>
+  <!-- instafeed -->
+  <script src="/assets/plugins/instafeed/instafeed.min.js"></script>
+  <!-- smooth scroll -->
+  <script src="/assets/plugins/smooth-scroll/smooth-scroll.js"></script>
+  <!-- headroom -->
+  <script src="/assets/plugins/headroom/headroom.js"></script>
+  <!-- reading time -->
+  <script src="/assets/plugins/reading-time/readingTime.min.js"></script>
+  <!-- lunr.js -->
+  <script src="/assets/plugins/search/lunr.min.js"></script>
+  <!-- search -->
+  <script src="/assets/plugins/search/search.js"></script>
+
+  <!-- Main Script -->
+  <script src="/assets/js/script.js"></script>
+</body>
+
+</html>

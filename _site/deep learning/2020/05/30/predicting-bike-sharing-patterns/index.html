@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Predicting Bike Sharing Patterns</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="parsa-jekyll" />
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/bootstrap.min.css">
+  <!-- slick slider -->
+  <link rel="stylesheet" href="/assets/plugins/slick/slick.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="/assets/plugins/themify-icons/themify-icons.css">
+
+  <!-- Main Stylesheet -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+  
+  <!--Favicon-->
+  <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+
+</head>
+
+
+<body>
+  
+
+  
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- /preloader -->
+  
+
+  <header class="navigation">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    
+    <a class="navbar-brand" href="http://localhost:4000/"><img class="img-fluid" src="/assets/images/s-logo.png" alt="Shrikant Naidu"></a>
+    
+    <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navogation"
+      aria-controls="navogation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse text-center" id="navogation">
+      <ul class="navbar-nav ml-auto">
+        
+        
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" href="/">Home</a>
+        </li>
+        
+        
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link text-uppercase text-dark dropdown-toggle" href="#" id="navbarDropdown"
+            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Projects
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            <a class="dropdown-item" href="/DL/">Deep Learning</a>
+            
+          </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" href="/about/">About</a>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+          <a class="nav-link text-uppercase text-dark" href="/contact/">Contact</a>
+        </li>
+        
+        
+      </ul>
+      <form class="form-inline position-relative ml-lg-4" action="/search.html" method="get">
+        <input class="form-control px-0 w-100" type="search" id="search-box" name="query" placeholder="Search">
+        <button class="search-icon" type="submit"><i class="ti-search text-dark"></i></button>
+      </form>
+    </div>
+  </nav>
+</header>
+
+    <!-- page-title -->
+<section class="section bg-secondary">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Predicting Bike Sharing Patterns</h4>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- /page-title -->
+
+<!-- blog single -->
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<ul class="list-inline d-flex justify-content-between py-3">
+					<li class="list-inline-item"><i class="ti-user mr-2"></i>Post by Shrikant Naidu</li>
+					<li class="list-inline-item"><i class="ti-calendar mr-2"></i>May 30, 2020</li>
+				</ul>
+				
+				<img src="/assets/images/masonary-post/bike.jpg" alt="Predicting Bike Sharing Patterns" class="w-100 img-fluid mb-4">
+				
+				<div class="content">
+					<h1 id="your-first-neural-network">Your first neural network</h1>
+
+<hr />
+<h3 id="why-were-here">Why We’re Here</h3>
+<p>In this project, you’ll build your first neural network and use it to predict daily bike rental ridership. We’ve provided some of the code, but left the implementation of the neural network up to you (for the most part). After you’ve submitted this project, feel free to explore the data and the model more.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<span class="o">%</span><span class="n">config</span> <span class="n">InlineBackend</span><span class="p">.</span><span class="n">figure_format</span> <span class="o">=</span> <span class="s">'retina'</span>
+
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</code></pre></div></div>
+
+<h2 id="load-and-prepare-the-data">Load and prepare the data</h2>
+
+<blockquote>
+  <p>A critical step in working with neural networks is preparing the data correctly. Variables on different scales make it difficult for the network to efficiently learn the correct weights. Below, we’ve written the code to load and prepare the data. You’ll learn more about this soon!</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data_path</span> <span class="o">=</span> <span class="s">'Bike-Sharing-Dataset/hour.csv'</span>
+
+<span class="n">rides</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rides</span><span class="p">.</span><span class="nf">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>instant</th>
+      <th>dteday</th>
+      <th>season</th>
+      <th>yr</th>
+      <th>mnth</th>
+      <th>hr</th>
+      <th>holiday</th>
+      <th>weekday</th>
+      <th>workingday</th>
+      <th>weathersit</th>
+      <th>temp</th>
+      <th>atemp</th>
+      <th>hum</th>
+      <th>windspeed</th>
+      <th>casual</th>
+      <th>registered</th>
+      <th>cnt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.81</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>13</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.22</td>
+      <td>0.2727</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>8</td>
+      <td>32</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.22</td>
+      <td>0.2727</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>5</td>
+      <td>27</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>10</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="checking-out-the-data">Checking out the data</h2>
+
+<p>This dataset has the number of riders for each hour of each day from January 1 2011 to December 31 2012. The number of riders is split between casual and registered, summed up in the <code class="language-plaintext highlighter-rouge">cnt</code> column. You can see the first few rows of the data above.</p>
+
+<p>Below is a plot showing the number of bike riders over the first 10 days or so in the data set. (Some days don’t have exactly 24 entries in the data set, so it’s not exactly 10 days.) You can see the hourly rentals here. This data is pretty complicated! The weekends have lower over all ridership and there are spikes when people are biking to and from work during the week. Looking at the data above, we also have information about temperature, humidity, and windspeed, all of these likely affecting the number of riders. You’ll be trying to capture all this with your model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rides</span><span class="p">[:</span><span class="mi">24</span><span class="o">*</span><span class="mi">10</span><span class="p">].</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'dteday'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'cnt'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f7c6fe39f28&gt;
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_6_1.png" alt="png" /></p>
+
+<h3 id="dummy-variables">Dummy variables</h3>
+<p>Here we have some categorical variables like season, weather, month. To include these in our model, we’ll need to make binary dummy variables. This is simple to do with Pandas thanks to <code class="language-plaintext highlighter-rouge">get_dummies()</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dummy_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">'season'</span><span class="p">,</span> <span class="s">'weathersit'</span><span class="p">,</span> <span class="s">'mnth'</span><span class="p">,</span> <span class="s">'hr'</span><span class="p">,</span> <span class="s">'weekday'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">dummy_fields</span><span class="p">:</span>
+    <span class="n">dummies</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">get_dummies</span><span class="p">(</span><span class="n">rides</span><span class="p">[</span><span class="n">each</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="n">each</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">rides</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">rides</span><span class="p">,</span> <span class="n">dummies</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">fields_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="s">'instant'</span><span class="p">,</span> <span class="s">'dteday'</span><span class="p">,</span> <span class="s">'season'</span><span class="p">,</span> <span class="s">'weathersit'</span><span class="p">,</span> 
+                  <span class="s">'weekday'</span><span class="p">,</span> <span class="s">'atemp'</span><span class="p">,</span> <span class="s">'mnth'</span><span class="p">,</span> <span class="s">'workingday'</span><span class="p">,</span> <span class="s">'hr'</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">rides</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="n">fields_to_drop</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span><span class="p">.</span><span class="nf">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>yr</th>
+      <th>holiday</th>
+      <th>temp</th>
+      <th>hum</th>
+      <th>windspeed</th>
+      <th>casual</th>
+      <th>registered</th>
+      <th>cnt</th>
+      <th>season_1</th>
+      <th>season_2</th>
+      <th>...</th>
+      <th>hr_21</th>
+      <th>hr_22</th>
+      <th>hr_23</th>
+      <th>weekday_0</th>
+      <th>weekday_1</th>
+      <th>weekday_2</th>
+      <th>weekday_3</th>
+      <th>weekday_4</th>
+      <th>weekday_5</th>
+      <th>weekday_6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0.24</td>
+      <td>0.81</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>13</td>
+      <td>16</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0.22</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>8</td>
+      <td>32</td>
+      <td>40</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0.22</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>5</td>
+      <td>27</td>
+      <td>32</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0.24</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>10</td>
+      <td>13</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0.24</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 59 columns</p>
+</div>
+
+<h3 id="scaling-target-variables">Scaling target variables</h3>
+<p>To make training the network easier, we’ll standardize each of the continuous variables. That is, we’ll shift and scale the variables such that they have zero mean and a standard deviation of 1.</p>
+
+<p>The scaling factors are saved so we can go backwards when we use the network for predictions.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">quant_features</span> <span class="o">=</span> <span class="p">[</span><span class="s">'casual'</span><span class="p">,</span> <span class="s">'registered'</span><span class="p">,</span> <span class="s">'cnt'</span><span class="p">,</span> <span class="s">'temp'</span><span class="p">,</span> <span class="s">'hum'</span><span class="p">,</span> <span class="s">'windspeed'</span><span class="p">]</span>
+<span class="c1"># Store scalings in a dictionary so we can convert back later
+</span><span class="n">scaled_features</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">quant_features</span><span class="p">:</span>
+    <span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">each</span><span class="p">].</span><span class="nf">mean</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="n">each</span><span class="p">].</span><span class="nf">std</span><span class="p">()</span>
+    <span class="n">scaled_features</span><span class="p">[</span><span class="n">each</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">]</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">each</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">each</span><span class="p">]</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span><span class="o">/</span><span class="n">std</span>
+</code></pre></div></div>
+
+<h3 id="splitting-the-data-into-training-testing-and-validation-sets">Splitting the data into training, testing, and validation sets</h3>
+
+<p>We’ll save the data for the last approximately 21 days to use as a test set after we’ve trained the network. We’ll use this set to make predictions and compare them with the actual number of riders.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Save data for approximately the last 21 days 
+</span><span class="n">test_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">21</span><span class="o">*</span><span class="mi">24</span><span class="p">:]</span>
+
+<span class="c1"># Now remove the test data from the data set 
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">21</span><span class="o">*</span><span class="mi">24</span><span class="p">]</span>
+
+<span class="c1"># Separate the data into features and targets
+</span><span class="n">target_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">'cnt'</span><span class="p">,</span> <span class="s">'casual'</span><span class="p">,</span> <span class="s">'registered'</span><span class="p">]</span>
+<span class="n">features</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="n">target_fields</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="n">target_fields</span><span class="p">]</span>
+<span class="n">test_features</span><span class="p">,</span> <span class="n">test_targets</span> <span class="o">=</span> <span class="n">test_data</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="n">target_fields</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">test_data</span><span class="p">[</span><span class="n">target_fields</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>We’ll split the data into two sets, one for training and one for validating as the network is being trained. Since this is time series data, we’ll train on historical data, then try to predict on future data (the validation set).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Hold out the last 60 days or so of the remaining data as a validation set
+</span><span class="n">train_features</span><span class="p">,</span> <span class="n">train_targets</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:</span><span class="o">-</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">],</span> <span class="n">targets</span><span class="p">[:</span><span class="o">-</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">]</span>
+<span class="n">val_features</span><span class="p">,</span> <span class="n">val_targets</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">:],</span> <span class="n">targets</span><span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">:]</span>
+</code></pre></div></div>
+
+<h2 id="time-to-build-the-network">Time to build the network</h2>
+
+<p>Below you’ll build your network. We’ve built out the structure. You’ll implement both the forward pass and backwards pass through the network. You’ll also set the hyperparameters: the learning rate, the number of hidden units, and the number of training passes.</p>
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/neural_network.png" width="300px" /></p>
+
+<p>The network has two layers, a hidden layer and an output layer. The hidden layer will use the sigmoid function for activations. The output layer has only one node and is used for the regression, the output of the node is the same as the input of the node. That is, the activation function is $f(x)=x$. A function that takes the input signal and generates an output signal, but takes into account the threshold, is called an activation function. We work through each layer of our network calculating the outputs for each neuron. All of the outputs from one layer become inputs to the neurons on the next layer. This process is called <em>forward propagation</em>.</p>
+
+<p>We use the weights to propagate signals forward from the input to the output layers in a neural network. We use the weights to also propagate error backwards from the output back into the network to update our weights. This is called <em>backpropagation</em>.</p>
+
+<blockquote>
+  <p><strong>Hint:</strong> You’ll need the derivative of the output activation function ($f(x) = x$) for the backpropagation implementation. If you aren’t familiar with calculus, this function is equivalent to the equation $y = x$. What is the slope of that equation? That is the derivative of $f(x)$.</p>
+</blockquote>
+
+<p>Below, you have these tasks:</p>
+<ol>
+  <li>Implement the sigmoid function to use as the activation function. Set <code class="language-plaintext highlighter-rouge">self.activation_function</code> in <code class="language-plaintext highlighter-rouge">__init__</code> to your sigmoid function.</li>
+  <li>Implement the forward pass in the <code class="language-plaintext highlighter-rouge">train</code> method.</li>
+  <li>Implement the backpropagation algorithm in the <code class="language-plaintext highlighter-rouge">train</code> method, including calculating the output error.</li>
+  <li>Implement the forward pass in the <code class="language-plaintext highlighter-rouge">run</code> method.</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#############
+# In the my_answers.py file, fill out the TODO sections as specified
+#############
+</span>
+<span class="kn">from</span> <span class="n">my_answers</span> <span class="kn">import</span> <span class="n">NeuralNetwork</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">mean</span><span class="p">((</span><span class="n">y</span><span class="o">-</span><span class="n">Y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="unit-tests">Unit tests</h2>
+
+<p>Run these unit tests to check the correctness of your network implementation. This will help you be sure your network was implemented correctly befor you starting trying to train it. These tests must all be successful to pass the project.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">unittest</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]])</span>
+<span class="n">targets</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mf">0.4</span><span class="p">]])</span>
+<span class="n">test_w_i_h</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+                       <span class="p">[</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]])</span>
+<span class="n">test_w_h_o</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">],</span>
+                       <span class="p">[</span><span class="o">-</span><span class="mf">0.1</span><span class="p">]])</span>
+
+<span class="k">class</span> <span class="nc">TestMethods</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    
+    <span class="c1">##########
+</span>    <span class="c1"># Unit tests for data loading
+</span>    <span class="c1">##########
+</span>    
+    <span class="k">def</span> <span class="nf">test_data_path</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="c1"># Test that file path to dataset has been unaltered
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">assertTrue</span><span class="p">(</span><span class="n">data_path</span><span class="p">.</span><span class="nf">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">'bike-sharing-dataset/hour.csv'</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">test_data_loaded</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="c1"># Test that data frame loaded
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nf">isinstance</span><span class="p">(</span><span class="n">rides</span><span class="p">,</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">))</span>
+    
+    <span class="c1">##########
+</span>    <span class="c1"># Unit tests for network functionality
+</span>    <span class="c1">##########
+</span>
+    <span class="k">def</span> <span class="nf">test_activation</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="nc">NeuralNetwork</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="c1"># Test that the activation function is a sigmoid
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">all</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="nf">activation_function</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">test_train</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="c1"># Test that weights are updated correctly on training
+</span>        <span class="n">network</span> <span class="o">=</span> <span class="nc">NeuralNetwork</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">network</span><span class="p">.</span><span class="n">weights_input_to_hidden</span> <span class="o">=</span> <span class="n">test_w_i_h</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+        <span class="n">network</span><span class="p">.</span><span class="n">weights_hidden_to_output</span> <span class="o">=</span> <span class="n">test_w_h_o</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+        
+        <span class="n">network</span><span class="p">.</span><span class="nf">train</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">allclose</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="n">weights_hidden_to_output</span><span class="p">,</span> 
+                                    <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span> <span class="mf">0.37275328</span><span class="p">],</span> 
+                                              <span class="p">[</span><span class="o">-</span><span class="mf">0.03172939</span><span class="p">]])))</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">allclose</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="n">weights_input_to_hidden</span><span class="p">,</span>
+                                    <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span> <span class="mf">0.10562014</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.20185996</span><span class="p">],</span> 
+                                              <span class="p">[</span><span class="mf">0.39775194</span><span class="p">,</span> <span class="mf">0.50074398</span><span class="p">],</span> 
+                                              <span class="p">[</span><span class="o">-</span><span class="mf">0.29887597</span><span class="p">,</span> <span class="mf">0.19962801</span><span class="p">]])))</span>
+
+    <span class="k">def</span> <span class="nf">test_run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="c1"># Test correctness of run method
+</span>        <span class="n">network</span> <span class="o">=</span> <span class="nc">NeuralNetwork</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">network</span><span class="p">.</span><span class="n">weights_input_to_hidden</span> <span class="o">=</span> <span class="n">test_w_i_h</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+        <span class="n">network</span><span class="p">.</span><span class="n">weights_hidden_to_output</span> <span class="o">=</span> <span class="n">test_w_h_o</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">allclose</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="mf">0.09998924</span><span class="p">))</span>
+
+<span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="p">.</span><span class="nc">TestLoader</span><span class="p">().</span><span class="nf">loadTestsFromModule</span><span class="p">(</span><span class="nc">TestMethods</span><span class="p">())</span>
+<span class="n">unittest</span><span class="p">.</span><span class="nc">TextTestRunner</span><span class="p">().</span><span class="nf">run</span><span class="p">(</span><span class="n">suite</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.012s
+
+OK
+
+
+
+
+
+&lt;unittest.runner.TextTestResult run=5 errors=0 failures=0&gt;
+</code></pre></div></div>
+
+<h2 id="training-the-network">Training the network</h2>
+
+<p>Here you’ll set the hyperparameters for the network. The strategy here is to find hyperparameters such that the error on the training set is low, but you’re not overfitting to the data. If you train the network too long or have too many hidden nodes, it can become overly specific to the training set and will fail to generalize to the validation set. That is, the loss on the validation set will start increasing as the training set loss drops.</p>
+
+<p>You’ll also be using a method know as Stochastic Gradient Descent (SGD) to train the network. The idea is that for each training pass, you grab a random sample of the data instead of using the whole data set. You use many more training passes than with normal gradient descent, but each pass is much faster. This ends up training the network more efficiently. You’ll learn more about SGD later.</p>
+
+<h3 id="choose-the-number-of-iterations">Choose the number of iterations</h3>
+<p>This is the number of batches of samples from the training data we’ll use to train the network. The more iterations you use, the better the model will fit the data. However, this process can have sharply diminishing returns and can waste computational resources if you use too many iterations.  You want to find a number here where the network has a low training loss, and the validation loss is at a minimum. The ideal number of iterations would be a level that stops shortly after the validation loss is no longer decreasing.</p>
+
+<h3 id="choose-the-learning-rate">Choose the learning rate</h3>
+<p>This scales the size of weight updates. If this is too big, the weights tend to explode and the network fails to fit the data. Normally a good choice to start at is 0.1; however, if you effectively divide the learning rate by n_records, try starting out with a learning rate of 1. In either case, if the network has problems fitting the data, try reducing the learning rate. Note that the lower the learning rate, the smaller the steps are in the weight updates and the longer it takes for the neural network to converge.</p>
+
+<h3 id="choose-the-number-of-hidden-nodes">Choose the number of hidden nodes</h3>
+<p>In a model where all the weights are optimized, the more hidden nodes you have, the more accurate the predictions of the model will be.  (A fully optimized model could have weights of zero, after all.) However, the more hidden nodes you have, the harder it will be to optimize the weights of the model, and the more likely it will be that suboptimal weights will lead to overfitting. With overfitting, the model will memorize the training data instead of learning the true pattern, and won’t generalize well to unseen data.</p>
+
+<p>Try a few different numbers and see how it affects the performance. You can look at the losses dictionary for a metric of the network performance. If the number of hidden units is too low, then the model won’t have enough space to learn and if it is too high there are too many options for the direction that the learning can take. The trick here is to find the right balance in number of hidden units you choose.  You’ll generally find that the best number of hidden nodes to use ends up being between the number of input and output nodes.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">sys</span>
+
+<span class="c1">####################
+### Set the hyperparameters in you myanswers.py file ###
+####################
+</span>
+<span class="kn">from</span> <span class="n">my_answers</span> <span class="kn">import</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">hidden_nodes</span><span class="p">,</span> <span class="n">output_nodes</span>
+
+
+<span class="n">N_i</span> <span class="o">=</span> <span class="n">train_features</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">network</span> <span class="o">=</span> <span class="nc">NeuralNetwork</span><span class="p">(</span><span class="n">N_i</span><span class="p">,</span> <span class="n">hidden_nodes</span><span class="p">,</span> <span class="n">output_nodes</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+
+<span class="n">losses</span> <span class="o">=</span> <span class="p">{</span><span class="s">'train'</span><span class="p">:[],</span> <span class="s">'validation'</span><span class="p">:[]}</span>
+<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+    <span class="c1"># Go through a random batch of 128 records from the training data set
+</span>    <span class="n">batch</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">(</span><span class="n">train_features</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">train_features</span><span class="p">.</span><span class="n">ix</span><span class="p">[</span><span class="n">batch</span><span class="p">].</span><span class="n">values</span><span class="p">,</span> <span class="n">train_targets</span><span class="p">.</span><span class="n">ix</span><span class="p">[</span><span class="n">batch</span><span class="p">][</span><span class="s">'cnt'</span><span class="p">]</span>
+                             
+    <span class="n">network</span><span class="p">.</span><span class="nf">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="c1"># Printing out the training progress
+</span>    <span class="n">train_loss</span> <span class="o">=</span> <span class="nc">MSE</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">train_features</span><span class="p">).</span><span class="n">T</span><span class="p">,</span> <span class="n">train_targets</span><span class="p">[</span><span class="s">'cnt'</span><span class="p">].</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">val_loss</span> <span class="o">=</span> <span class="nc">MSE</span><span class="p">(</span><span class="n">network</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">val_features</span><span class="p">).</span><span class="n">T</span><span class="p">,</span> <span class="n">val_targets</span><span class="p">[</span><span class="s">'cnt'</span><span class="p">].</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Progress: {:2.1f}"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">ii</span><span class="o">/</span><span class="nf">float</span><span class="p">(</span><span class="n">iterations</span><span class="p">))</span> \
+                     <span class="o">+</span> <span class="s">"% ... Training loss: "</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span> \
+                     <span class="o">+</span> <span class="s">" ... Validation loss: "</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)[:</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="nf">flush</span><span class="p">()</span>
+    
+    <span class="n">losses</span><span class="p">[</span><span class="s">'train'</span><span class="p">].</span><span class="nf">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+    <span class="n">losses</span><span class="p">[</span><span class="s">'validation'</span><span class="p">].</span><span class="nf">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Progress: 0.1% ... Training loss: 71.64 ... Validation loss: 18.54
+
+/opt/conda/lib/python3.6/site-packages/ipykernel_launcher.py:17: DeprecationWarning: 
+.ix is deprecated. Please use
+.loc for label based indexing or
+.iloc for positional indexing
+
+See the documentation here:
+http://pandas.pydata.org/pandas-docs/stable/indexing.html#ix-indexer-is-deprecated
+
+
+Progress: 100.0% ... Training loss: 0.076 ... Validation loss: 0.160
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">[</span><span class="s">'train'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">'Training loss'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">[</span><span class="s">'validation'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">'Validation loss'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">ylim</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_22_0.png" alt="png" /></p>
+
+<h2 id="check-out-your-predictions">Check out your predictions</h2>
+
+<p>Here, use the test data to view how well your network is modeling the data. If something is completely wrong here, make sure each step in your network is implemented correctly.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">scaled_features</span><span class="p">[</span><span class="s">'cnt'</span><span class="p">]</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">network</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">test_features</span><span class="p">).</span><span class="n">T</span><span class="o">*</span><span class="n">std</span> <span class="o">+</span> <span class="n">mean</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">'Prediction'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">((</span><span class="n">test_targets</span><span class="p">[</span><span class="s">'cnt'</span><span class="p">]</span><span class="o">*</span><span class="n">std</span> <span class="o">+</span> <span class="n">mean</span><span class="p">).</span><span class="n">values</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Data'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_xlim</span><span class="p">(</span><span class="n">right</span><span class="o">=</span><span class="nf">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+<span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">rides</span><span class="p">.</span><span class="n">ix</span><span class="p">[</span><span class="n">test_data</span><span class="p">.</span><span class="n">index</span><span class="p">][</span><span class="s">'dteday'</span><span class="p">])</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">dates</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="s">'%b %d'</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">dates</span><span class="p">))[</span><span class="mi">12</span><span class="p">::</span><span class="mi">24</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">.</span><span class="nf">set_xticklabels</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="mi">12</span><span class="p">::</span><span class="mi">24</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/opt/conda/lib/python3.6/site-packages/ipykernel_launcher.py:10: DeprecationWarning: 
+.ix is deprecated. Please use
+.loc for label based indexing or
+.iloc for positional indexing
+
+See the documentation here:
+http://pandas.pydata.org/pandas-docs/stable/indexing.html#ix-indexer-is-deprecated
+  # Remove the CWD from sys.path while we load stuff.
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_24_1.png" alt="png" /></p>
+
+				</div>
+				
+			</div>
+			<div class="col-lg-4">
+  <div class="widget search-box">
+    <form action="/search.html" method="get">
+      <i class="ti-search"></i>
+      <input type="search" id="search-box" class="form-control border-0 pl-5" name="query" placeholder="Search">
+    </form>
+  </div>
+  <div class="widget">
+    <h6 class="mb-4">LATEST POST</h6>
+    
+    <div class="media mb-4">
+      <div class="post-thumb-sm mr-3">
+        <img class="img-fluid" src="/assets/images/masonary-post/sentiment-analysis.jpg" alt="Sentiment Analysis on AWS SageMaker">
+      </div>
+      <div class="media-body">
+        <ul class="list-inline d-flex justify-content-between mb-2">
+          <li class="list-inline-item">Post By Shrikant</li>
+          <li class="list-inline-item">June 25, 2020</li>
+        </ul>
+        <h6><a class="text-dark" href="/deep%20learning/2020/06/25/sentiment-analysis-on-aws-sagemaker/">Sentiment Analysis on AWS SageMaker</a></h6>
+      </div>
+    </div>
+    
+    <div class="media mb-4">
+      <div class="post-thumb-sm mr-3">
+        <img class="img-fluid" src="/assets/images/masonary-post/face-gen.jpg" alt="Face Generation with GAN">
+      </div>
+      <div class="media-body">
+        <ul class="list-inline d-flex justify-content-between mb-2">
+          <li class="list-inline-item">Post By Shrikant</li>
+          <li class="list-inline-item">June 14, 2020</li>
+        </ul>
+        <h6><a class="text-dark" href="/deep%20learning/2020/06/14/face-generation/">Face Generation with GAN</a></h6>
+      </div>
+    </div>
+    
+    <div class="media mb-4">
+      <div class="post-thumb-sm mr-3">
+        <img class="img-fluid" src="/assets/images/masonary-post/tv-scripts.jpg" alt="Generate TV Scripts">
+      </div>
+      <div class="media-body">
+        <ul class="list-inline d-flex justify-content-between mb-2">
+          <li class="list-inline-item">Post By Shrikant</li>
+          <li class="list-inline-item">June 8, 2020</li>
+        </ul>
+        <h6><a class="text-dark" href="/deep%20learning/2020/06/08/tv-script-generation/">Generate TV Scripts</a></h6>
+      </div>
+    </div>
+    
+  </div>
+  <div class="widget">
+    <h6 class="mb-4">CATEGORIES</h6>
+    <ul class="list-inline tag-list">
+      
+      <li class="list-inline-item m-1"><a href="/category/nature">Nature</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/article">Article</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/fashion">Fashion</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/philosophy">Philosophy</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/lifestyle">Lifestyle</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/food">Food</a></li>
+      &nbsp;
+      
+      <li class="list-inline-item m-1"><a href="/category/deep-learning">Deep Learning</a></li>
+      
+      
+    </ul>
+  </div>
+</div>
+		</div>
+	</div>
+</section>
+<!-- /blog single -->
+
+
+  <footer class="bg-secondary">
+  <div class="section">
+    <div class="container">
+      <div class="row">
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <a href="/"><img src="/assets/images/s-logo.png" alt="Shrikant Naidu" class="img-fluid"></a>
+        </div>
+        
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <h6>Address</h6>
+          <ul class="list-unstyled">
+            <li class="font-secondary text-dark">Mumbai</li>
+            <li class="font-secondary text-dark"></li>
+          </ul>
+        </div>
+        
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <h6>Contact Info</h6>
+          <ul class="list-unstyled">
+            <li class="font-secondary text-dark">Tel: </li>
+            <li class="font-secondary text-dark">Mail: shrikantnaidu777@gmail.com</li>
+          </ul>
+        </div>
+        
+        
+        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+          <h6>Follow</h6>
+          <ul class="list-inline d-inline-block">
+            
+            <li class="list-inline-item"><a href="https://www.linkedin.com/in/shrikant-naidu/" class="text-dark"><i class="ti-linkedin"></i></a></li>
+            
+            <li class="list-inline-item"><a href="https://github.com/shrikantnaidu" class="text-dark"><i class="ti-github"></i></a></li>
+            
+            <li class="list-inline-item"><a href="https://twitter.com/sk_dataholic" class="text-dark"><i class="ti-twitter-alt"></i></a></li>
+            
+            <li class="list-inline-item"><a href="https://www.instagram.com/sk.barcaholic/" class="text-dark"><i class="ti-instagram"></i></a></li>
+            
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="text-center pb-3"><p>Copyright 2023 Designed by <a href="https://themefisher.com">Themefisher</a> &amp; Developed by <a href="https://gethugothemes.com">Gethugothemes</a></p>
+</div>
+</footer>
+
+  <!-- jQuery -->
+  <script src="/assets/plugins/jQuery/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="/assets/plugins/bootstrap/bootstrap.min.js"></script>
+  <!-- slick slider -->
+  <script src="/assets/plugins/slick/slick.min.js"></script>
+  <!-- masonry -->
+  <script src="/assets/plugins/masonry/masonry.js"></script>
+  <!-- instafeed -->
+  <script src="/assets/plugins/instafeed/instafeed.min.js"></script>
+  <!-- smooth scroll -->
+  <script src="/assets/plugins/smooth-scroll/smooth-scroll.js"></script>
+  <!-- headroom -->
+  <script src="/assets/plugins/headroom/headroom.js"></script>
+  <!-- reading time -->
+  <script src="/assets/plugins/reading-time/readingTime.min.js"></script>
+  <!-- lunr.js -->
+  <script src="/assets/plugins/search/lunr.min.js"></script>
+  <!-- search -->
+  <script src="/assets/plugins/search/search.js"></script>
+
+  <!-- Main Script -->
+  <script src="/assets/js/script.js"></script>
+</body>
+
+</html>

@@ -5,15 +5,20 @@ baseurl: "" # The subpath of your site, e.g. /blog
 url: "" # The base hostname & protocol for your site, e.g. http://example.com
 
 title: Shrikant Naidu
-logo: /assets/images/logo.png # You can add own logo
+logo: /assets/images/s-logo.png # You can add own logo
 description: # Add your awesome description
-copyright: #Copyright 2020 Designed by [Themefisher](https://themefisher.com) & Developed by [Gethugothemes](https://gethugothemes.com)
+copyright: Copyright 2023 Designed by [Themefisher](https://themefisher.com) & Developed by [Gethugothemes](https://gethugothemes.com)
 # Preloader
 preloader: true # To disable preloader change value to false
 
 menu:
   - name: Home
     url: /
+  - name: Projects
+    url: /Projects/
+    submenu: 
+      - name : Deep Learning
+        url : /DL/
   - name: About
     url: /about/
   - name: Contact
@@ -37,8 +42,8 @@ featured-post-slider: true # You can enable or disable the featured-post-slider 
 #-------------------------------
 # Hero Section
 hero:
-  hero-subtitle: I'm a Data Scientist based in India.
-  hero-banner: /assets/images/banner-img.png # Add your banner image '/assets/images/'
+  hero-subtitle: I'm a Data Scientist with a keen interest in building data-driven solutions for complex business problems. 
+  hero-banner: /assets/images/sk-banner.png # Add your banner image '/assets/images/'
 
 #-------------------------------
 # Author Settings
@@ -49,10 +54,10 @@ author:
 # Contact Info
 contact:
   email: shrikantnaidu777@gmail.com
-  phone: #+90 000 333 22
+  phone: #+90 000 333 22 # add something witty in these fields
   address:
     city: Mumbai
-    street: 400089
+    # street: 400089
 
 # Contact Form
 contact-form: shrikantnaidu777@gmail.com
@@ -72,8 +77,8 @@ disqus-identifier: # Add your shortname for Disqus Comment. For example mr-brown
 #-------------------------------
 # Instagram Feed
 instafeed: false # To enable the instafeed, use the value true. To turn off use the value false.
-userID: 4044026246
-accessToken: 4044026246.1677ed0.8896752506ed4402a0519d23b8f50a17
+userID: 
+accessToken: 
 
 #-------------------------------
 # Google Analytics
