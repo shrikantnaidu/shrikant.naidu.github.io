@@ -3,7 +3,7 @@ layout: post
 title: Dog Breed Classifier with CNN
 date: 2020-06-04T 20:46:10 +08:00
 description: "This is meta description"
-image: "assets/images/masonary-post/dog-breed.jpg"
+image: "assets/images/masonary-post/dogs.jpg"
 categories: 
   - "Deep Learning"
 ---
