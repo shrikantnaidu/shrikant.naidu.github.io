@@ -15,11 +15,11 @@ preloader: true # To disable preloader change value to false
 menu:
   - name: Home
     url: /
-  - name: Projects
-    url: /Projects/
-    submenu: 
-      - name : Deep Learning
-        url : /DL/
+  # - name: Projects
+  #   url: /Projects/
+  #   submenu: 
+  #     - name : Deep Learning
+  #       url : /DL/
   - name: About
     url: /about/
   - name: Contact
@@ -38,12 +38,12 @@ menu:
 
 layout_home_page: false # Homepage layout ( two layout is available, you can set the another layout by change the value of layout_home_page "true" to "false")
 
-featured-post-slider: true # You can enable or disable the featured-post-slider using true or false values.
+featured-post-slider: false # You can enable or disable the featured-post-slider using true or false values.
 
 #-------------------------------
 # Hero Section
 hero:
-  hero-subtitle: I'm a Data Scientist with a keen interest in building data-driven solutions for complex business problems. 
+  hero-subtitle: #I'm a Data Scientist with a keen interest in building data-driven solutions for complex business problems. 
   hero-banner: /assets/images/sk-banner.png # Add your banner image '/assets/images/'
 
 #-------------------------------
@@ -55,10 +55,10 @@ author:
 # Contact Info
 contact:
   email: shrikantnaidu777@gmail.com
-  phone: #+90 000 333 22 # add something witty in these fields
+  phone: 112 #+90 000 333 22 # add something witty in these fields
   address:
     city: Mumbai
-    # street: 400089
+    street: 400089
 
 # Contact Form
 contact-form: example@email.com
