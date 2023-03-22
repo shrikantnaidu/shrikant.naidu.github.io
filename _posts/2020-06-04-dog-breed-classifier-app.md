@@ -15,7 +15,7 @@ categories:
 
 In this project, we'll make the first steps towards developing an algorithm that could be used as part of a mobile or web app.  At the end of this project, our code will accept any user-supplied image as input.  If a dog is detected in the image, it will provide an estimate of the dog's breed.  If a human is detected, it will provide an estimate of the dog breed that is most resembling.  The image below displays potential sample output of our finished project
 
-<img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/sample_dog_output.png" alt="image" height="400" width="300">
+<img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/sample_dog_output.png" alt="image" height="400" width="400">
 
 In this real-world setting, we will need to piece together a series of models to perform different tasks; for instance, the algorithm that detects humans in an image will be different from the CNN that infers dog breed.  There are many points of possible failure, and no perfect algorithm exists.  
 
@@ -26,8 +26,8 @@ We break the notebook into separate steps.  Feel free to use the links below to 
 * [Step 0](#step0): Import Datasets
 * [Step 1](#step1): Detect Humans
 * [Step 2](#step2): Detect Dogs
-* [Step 3](#step3): Create a CNN to Classify Dog Breeds (from Scratch)
-* [Step 4](#step4): Create a CNN to Classify Dog Breeds (using Transfer Learning)
+* [Step 3](#step3): Create a CNN to Classify Dog Breeds from Scratch
+* [Step 4](#step4): Create a CNN to Classify Dog Breeds using Transfer Learning
 * [Step 5](#step5): Write our Algorithm
 * [Step 6](#step6): Test our Algorithm
 
@@ -286,7 +286,7 @@ Output:
 
 ---
 <a id='step3'></a>
-### Step 3: Create a CNN to Classify Dog Breeds (from Scratch)
+### Step 3: Create a CNN to Classify Dog Breeds from Scratch
 
 Now that we have functions for detecting humans and dogs in images, we need a way to predict breed from images.  In this step, we create a CNN that classifies dog breeds. Our aim is to create a CNN from scratch (so, we can't use transfer learning yet!), and we must attain a test accuracy of at least 10%.  In Step 4 of this notebook, we will have the opportunity to use transfer learning to create a CNN that attains greatly improved accuracy.
 
@@ -432,7 +432,7 @@ Create a CNN to classify dog breed.
 
 #### Specify Loss Function and Optimizer
 
-Use the next code cell to specify a [loss function](http://pytorch.org/docs/stable/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/stable/optim.html). Save the chosen loss function as `criterion_scratch`, and the optimizer as `optimizer_scratch` below.
+We specify a [loss function](http://pytorch.org/docs/stable/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/stable/optim.html). Save the chosen loss function as `criterion_scratch`, and the optimizer as `optimizer_scratch` below.
 
 
 >```python
@@ -685,7 +685,7 @@ Using transfer learning, we create a CNN to classify dog breed.
 
 #### Specify Loss Function and Optimizer
 
-Use the next code cell to specify a [loss function](http://pytorch.org/docs/master/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/master/optim.html).  Save the chosen loss function as `criterion_transfer`, and the optimizer as `optimizer_transfer` below.
+We specify a [loss function](http://pytorch.org/docs/master/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/master/optim.html).  Save the chosen loss function as `criterion_transfer`, and the optimizer as `optimizer_transfer` below.
 
 
 >```python
@@ -791,16 +791,15 @@ We create a function that takes an image path as input and returns the dog breed
 ### Step 5: Write your Algorithm
 
 We create an algorithm that accepts a file path to an image and first determines whether the image contains a human, dog, or neither.  Then,
-- if a __dog__ is detected in the image, return the predicted breed.
-- if a __human__ is detected in the image, return the resembling dog breed.
-- if __neither__ is detected in the image, provide output that indicates an error.
-
-You are welcome to write your own functions for detecting humans and dogs in images, but feel free to use the `face_detector` and `human_detector` functions developed above.  You are __required__ to use your CNN from Step 4 to predict dog breed.  
+- a. if a __dog__ is detected in the image, return the predicted breed.
+- b. if a __human__ is detected in the image, return the resembling dog breed.
+- c. if __neither__ is detected in the image, provide output that indicates an error.
 
 Some sample output for our algorithm is provided below, but feel free to design your own user experience!
 
 ![Sample Human Output](https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/sample_human_output.png)
 
+<!-- <img src="https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/sample_human_output.png" alt="image" height="400" width="400"> -->
 
 #### Write your Algorithm
 
@@ -1077,3 +1076,7 @@ Output:
     The Predicted Breed: Labrador retriever
     
 ---
+
+### Conclusion
+
+We've successfully developed an algorithm that detects the dog breed for a dog image and estimates the closest resembling dog breed for a human. The model was initially built from scratch using CNNs, upon evaluation we learned that the model was not performing well so we leveraged transfer learning which performed way better than our intial model. 
