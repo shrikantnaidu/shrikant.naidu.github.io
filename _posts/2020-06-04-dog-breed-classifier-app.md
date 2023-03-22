@@ -28,8 +28,8 @@ We break the notebook into separate steps.  Feel free to use the links below to 
 * [Step 2](#step2): Detect Dogs
 * [Step 3](#step3): Create a CNN to Classify Dog Breeds (from Scratch)
 * [Step 4](#step4): Create a CNN to Classify Dog Breeds (using Transfer Learning)
-* [Step 5](#step5): Write your Algorithm
-* [Step 6](#step6): Test Your Algorithm
+* [Step 5](#step5): Write our Algorithm
+* [Step 6](#step6): Test our Algorithm
 
 ---
 <a id='step0'></a>
@@ -743,8 +743,6 @@ Output:
 
 #### Test the Model
 
-Try out your model on the test dataset of dog images. Use the code cell below to calculate and print the test loss and accuracy.  Ensure that your test accuracy is greater than 60%.
-
 
 >```python
 >test(loaders_transfer, model_transfer, criterion_transfer, use_cuda)
@@ -759,7 +757,7 @@ Output:
 
 #### Predict Dog Breed with the Model
 
-Write a function that takes an image path as input and returns the dog breed (`Affenpinscher`, `Afghan hound`, etc) that is predicted by your model.  
+We create a function that takes an image path as input and returns the dog breed (`Affenpinscher`, `Afghan hound`, etc) that is predicted by our model.  
 
 
 >```python
@@ -792,7 +790,7 @@ Write a function that takes an image path as input and returns the dog breed (`A
 <a id='step5'></a>
 ### Step 5: Write your Algorithm
 
-Write an algorithm that accepts a file path to an image and first determines whether the image contains a human, dog, or neither.  Then,
+We create an algorithm that accepts a file path to an image and first determines whether the image contains a human, dog, or neither.  Then,
 - if a __dog__ is detected in the image, return the predicted breed.
 - if a __human__ is detected in the image, return the resembling dog breed.
 - if __neither__ is detected in the image, provide output that indicates an error.
@@ -850,21 +848,13 @@ Some sample output for our algorithm is provided below, but feel free to design 
 
 ---
 <a id='step6'></a>
-### Step 6: Test Your Algorithm
+### Step 6: Test our Algorithm
 
-In this section, you will take your new algorithm for a spin!  What kind of dog does the algorithm think that _you_ look like?  If you have a dog, does it predict your dog's breed accurately?  If you have a cat, does it mistakenly think that your cat is a dog?
+In this section, we'll take our new algorithm for a spin! 
 
-#### Test Your Algorithm on Sample Images!
+#### Test our Algorithm on Sample Images!
 
-Test your algorithm at least six images on your computer.  Feel free to use any images you like.  Use at least two human and two dog images.  
-
-__Question 6:__ Is the output better than you expected :) ?  Or worse :( ?  Provide at least three possible points of improvement for your algorithm.
-
-__Answer:__ 
-1. The ouput is just as expected which correctly classifies dog and somewhat classifies the closest remsemblance to a dog for a human.
-2. One thing that surprised me while testing on custom images was that the model worked even with random noise in the test images and gave almost correct results.
-3. Training on more data and augmenting this data can improve the accuracy of our model.
-4. Increasing the number of epochs can also improve the performance.
+Testing our algorithm with at least six images on our computer.  Feel free to use any images you like.  Use at least two human and two dog images.  
 
 
 >```python
