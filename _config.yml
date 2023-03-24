@@ -38,13 +38,13 @@ menu:
 
 layout_home_page: false # Homepage layout ( two layout is available, you can set the another layout by change the value of layout_home_page "true" to "false")
 
-featured-post-slider: false # You can enable or disable the featured-post-slider using true or false values.
+featured-post-slider: true # You can enable or disable the featured-post-slider using true or false values.
 
 #-------------------------------
 # Hero Section
 hero:
-  hero-subtitle: #I'm a Data Scientist with a keen interest in building data-driven solutions for complex business problems. 
-  hero-banner: /assets/images/sk-banner.png # Add your banner image '/assets/images/'
+  hero-subtitle: Data Scientist from Mumbai. I work with data to uncover insights and drive informed decision-making for businesses and organizations.
+  hero-banner: /assets/images/sk-banner-adj.png      # sk-banner.png # Add your banner image '/assets/images/'
 
 #-------------------------------
 # Author Settings
@@ -55,7 +55,7 @@ author:
 # Contact Info
 contact:
   email: shrikantnaidu777@gmail.com
-  phone: 112 #+90 000 333 22 # add something witty in these fields
+  phone: +91-8433888268  # add something witty in these fields
   address:
     city: Mumbai
     street: 400089
@@ -95,7 +95,7 @@ plugins:
   - jekyll/tagging
   - jekyll-archives
 
-paginate: 10
+paginate: 5
 paginate_path: "/page/:num"
 
 # Pages Path
