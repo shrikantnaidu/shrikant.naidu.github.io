@@ -43,7 +43,7 @@ featured-post-slider: true # You can enable or disable the featured-post-slider 
 #-------------------------------
 # Hero Section
 hero:
-  hero-subtitle: Data Scientist from Mumbai. I work with data to uncover insights and drive informed decision-making for businesses and organizations.
+  hero-subtitle: I'm a Data Scientist from Mumbai. I work with data to uncover insights and drive informed decision-making for businesses and organizations.
   hero-banner: /assets/images/sk-banner-adj.png      # sk-banner.png # Add your banner image '/assets/images/'
 
 #-------------------------------
