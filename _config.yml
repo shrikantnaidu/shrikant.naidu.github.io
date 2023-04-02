@@ -20,8 +20,8 @@ menu:
   #   submenu: 
   #     - name : Deep Learning
   #       url : /DL/
-  - name: About
-    url: /about/
+  # - name: About
+  #   url: /about/
   - name: Contact
     url: /contact/
 
@@ -55,7 +55,7 @@ author:
 # Contact Info
 contact:
   email: shrikantnaidu777@gmail.com
-  phone: +91-8433888268  # add something witty in these fields
+  phone: +91-8433888268  
   address:
     city: Mumbai
     street: 400089
