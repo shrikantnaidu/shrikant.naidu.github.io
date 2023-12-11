@@ -15,13 +15,16 @@ preloader: true # To disable preloader change value to false
 menu:
   - name: Home
     url: /
-  # - name: Projects
-  #   url: /Projects/
-  #   submenu: 
-  #     - name : Deep Learning
-  #       url : /DL/
-  # - name: About
-  #   url: /about/
+  - name: Projects
+    url: /Projects/
+    submenu: 
+      - name : Deep Learning
+        url : /deep-learning/
+      - name : Data Engineering
+        url : /data-engineering/
+
+  - name: About
+    url: /about/
   - name: Contact
     url: /contact/
 
@@ -44,7 +47,7 @@ featured-post-slider: true # You can enable or disable the featured-post-slider 
 # Hero Section
 hero:
   hero-subtitle: I'm a Data Scientist from Mumbai. I work with data to uncover insights and drive informed decision-making for businesses and organizations.
-  hero-banner: /assets/images/sk-banner-adj.png      # sk-banner.png # Add your banner image '/assets/images/'
+  hero-banner: /assets/images/sk-img-sharpened-new.png      # sk-banner.png # Add your banner image '/assets/images/'
 
 #-------------------------------
 # Author Settings

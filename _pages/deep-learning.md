@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Deep Learning Projects
-permalink: /DL/
+permalink: /deep-learning/
 image: 
 ---
 
