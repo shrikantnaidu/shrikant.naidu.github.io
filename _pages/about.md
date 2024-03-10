@@ -1,17 +1,19 @@
 ---
-layout: page
+layout: about
 title: About Me
 permalink: /about/
-image: /assets/images/author.jpg
+image: /assets/images/trp-sharpened.png
 ---
 <h3 class="font-weight-light">Hello, I’m <span class="font-weight-bold">{{site.author.name}}</span></h3>
 
-I'm a Data Scientist with a keen interest in building data-driven solutions for complex business problems. Currently, I'm working as a Senior Data Scientist at Loylty Rewardz where I'm responsible for fulfilling the data science and engineering needs of the business.
+Welcome to my digital space! I'm a seasoned Data Scientist with a passion for crafting innovative, data-driven solutions to tackle complex business challenges. Currently serving as a Senior Data Scientist at Loylty Rewardz, I orchestrate the fulfillment of data science and engineering requirements crucial to the business.
 
-I started my journey in Data Science as an intern at a Digital Marketing Start-up called Leadzpipe where I was responsible for extracting the campaign data from Google AdWords, modeling the data for a NoSQL database, and then creating insights with the data for the clients. My work here helped me bag an award at the Aegis Graham Awards 2020.
+My journey in Data Science kicked off during an enriching internship at Leadzpipe, a Digital Marketing Start-up. There, I honed my skills in extracting campaign data from Google AdWords, modeling it for NoSQL databases, and deriving actionable insights for clients. This effort earned me recognition at the Aegis Graham Awards in 2020.
 
-After the completion of my internship, I started working as a Data Analyst at a rapidly growing Healthcare Start-up based in the US known as Medly where I was responsible for helping my stakeholders make data-driven decisions by leveraging data analytics and machine learning.
+Following the internship, I ventured into the dynamic realm of Healthcare at Medly, a US-based startup. As a Data Analyst, I empowered stakeholders with data-driven decision-making by leveraging analytics and machine learning techniques.
 
-Post Medly, I tried my hand at consulting and joined Predoole Analytics as a Data Scientist where I was responsible for restructuring and optimizing the data pipelines in the insurance space. Also, led the development of a Geospatial Product that could perform a proximity analysis for retail stores in the US with the help of the Decennial US Census Data.
+Exploring diverse facets of the industry, I delved into consulting at Predoole Analytics, assuming the role of a Data Scientist. Here, I revamped and optimized data pipelines in the insurance sector and spearheaded the development of a Geospatial Product. This innovative tool conducted proximity analyses for retail stores in the US, utilizing Decennial US Census Data.
 
-I've always been passionately curious about the practicality of Math and Computer Science which led me to pursue a bachelor's degree in Computer Science and then my fascination with the recent development in Machine Learning and Deep Learning directed me towards Data Science. 
+My academic foundation in Computer Science, complemented by a deep-seated curiosity for the practical applications of mathematics, shaped my journey. A culmination of these experiences and my fascination with the evolving landscape of Machine Learning and Deep Learning led me to embark on a career in Data Science.
+
+Join me on this exploration of turning data into insights and navigating the ever-evolving landscape of technology and analytics.
