@@ -6,7 +6,7 @@ image: /assets/images/trp-sharpened.png
 ---
 <h3 class="font-weight-light">Hello, I’m <span class="font-weight-bold">{{site.author.name}}</span></h3>
 
-Welcome to my digital space! I'm a seasoned Data Scientist with a passion for crafting innovative, data-driven solutions to tackle complex business challenges. Currently serving as a Senior Data Scientist at Loylty Rewardz, I orchestrate the fulfillment of data science and engineering requirements crucial to the business.
+Welcome to my digital space! I'm a seasoned Data Scientist with a passion for crafting innovative, data-driven solutions to tackle complex business challenges. Currently working  as a Senior Data Scientist at Loylty Rewardz where I orchestrate the fulfillment of data science and engineering requirements crucial to the business.
 
 My journey in Data Science kicked off during an enriching internship at Leadzpipe, a Digital Marketing Start-up. There, I honed my skills in extracting campaign data from Google AdWords, modeling it for NoSQL databases, and deriving actionable insights for clients. This effort earned me recognition at the Aegis Graham Awards in 2020.
 
