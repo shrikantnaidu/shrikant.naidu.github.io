@@ -6,11 +6,10 @@ description: "This is meta description"
 image: "assets/images/masonary-post/tv-scripts.jpg"
 categories: 
   - "Deep Learning"
-
 ---
 ### Why We're Here 
 
-In this project, we'll generate your own [Seinfeld](https://en.wikipedia.org/wiki/Seinfeld) TV scripts using RNNs. We'll be using part of the [Seinfeld dataset](https://www.kaggle.com/thec03u5/seinfeld-chronicles#scripts.csv) of scripts from 9 seasons.  The Neural Network we'll build will generate a new ,"fake" TV script, based on patterns it recognizes in this training data.
+In this project, we'll generate our own [Seinfeld](https://en.wikipedia.org/wiki/Seinfeld) TV scripts using RNNs. We'll be using part of the [Seinfeld dataset](https://www.kaggle.com/thec03u5/seinfeld-chronicles#scripts.csv) of scripts from 9 seasons.  The Neural Network we'll build will generate a new ,"fake" TV script, based on patterns it recognizes in this training data.
 
 ### Get the Data
 
@@ -398,8 +397,8 @@ The initialize function should create the layers of the neural network and save 
 
 ### Note
 
-1. a. Make sure to stack the outputs of the lstm to pass to your fully-connected layer, you can do this with `lstm_output = lstm_output.contiguous().view(-1, self.hidden_dim)`
-2. b. You can get the last batch of word scores by shaping the output of the final, fully-connected layer like so:
+1. Make sure to stack the outputs of the lstm to pass to your fully-connected layer, you can do this with `lstm_output = lstm_output.contiguous().view(-1, self.hidden_dim)`
+2. You can get the last batch of word scores by shaping the output of the final, fully-connected layer like so:
 
     >```python
     ># reshape into (batch_size, seq_length, output_size)
@@ -920,7 +919,6 @@ It's ok if the TV script doesn't make perfect sense. It should look like alterna
 
 We can see that there are multiple characters that say (somewhat) complete sentences, but it doesn't have to be perfect! It takes quite a while to get good results, and often, you'll have to use a smaller vocabulary (and discard uncommon words), or get more data.  
 
-### Conclusion
 
 
 
