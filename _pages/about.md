@@ -2,7 +2,7 @@
 layout: about
 title: About Me
 permalink: /about/
-image: /assets/images/trp-sharpened.png
+image: /assets/images/2-sharpened.png
 ---
 <h3 class="font-weight-light">Hello, I’m <span class="font-weight-bold">{{site.author.name}}</span></h3>
 
