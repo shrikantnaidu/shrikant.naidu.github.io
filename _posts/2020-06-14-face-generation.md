@@ -586,10 +586,6 @@ Keep in mind that, if you've moved your models to GPU, you'll also have to move 
 >
 >            batch_size = real_images.size(0)
 >            real_images = scale(real_images)
->
->            # ===============================================
->            #         YOUR CODE HERE: TRAIN THE NETWORKS
->            # ===============================================
 >            
 >            # ============================================
 >            #            TRAIN THE DISCRIMINATOR
@@ -650,7 +646,7 @@ Keep in mind that, if you've moved your models to GPU, you'll also have to move 
 >                
 >            
 >            # ===============================================
->            #              END OF YOUR CODE
+>            #              END OF CODE
 >            # ===============================================
 >
 >            # Print some loss stats
@@ -745,4 +741,6 @@ Output:
 ```
 ![png](https://raw.githubusercontent.com/shrikantnaidu/shrikantnaidu.github.io/main/_posts/assets/output_42_0.png)
 
-### Conclusion
+
+
+
