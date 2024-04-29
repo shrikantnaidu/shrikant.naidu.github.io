@@ -9,6 +9,7 @@ categories:
 ---
 
 ## Predicting Bike Sharing Patterns
+<!-- ## [Predicting Bike Sharing Patterns](https://github.com/shrikantnaidu/Predicting-Bike-Sharing-Patterns) -->
 
 ---
 ### Why We're Here 
