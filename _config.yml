@@ -70,8 +70,8 @@ contact-form: example@email.com
 social:
   - { icon: "ti-linkedin", link: "https://www.linkedin.com/in/shrikant-naidu/"}
   - { icon: "ti-github", link: "https://github.com/shrikantnaidu"}
-  - { icon: "ti-twitter-alt", link: "https://twitter.com/sk_dataholic" }
-  - { icon: "ti-instagram", link: "https://www.instagram.com/sk.barcaholic/" }
+  - { icon: "ti-twitter-alt", link: "https://x.com/shrikantnaiidu" }
+  # - { icon: "ti-instagram", link: "https://www.instagram.com/sk.barcaholic/" }
 
 
 #-------------------------------
