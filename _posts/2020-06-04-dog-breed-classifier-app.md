@@ -2,7 +2,7 @@
 layout: post
 title: Dog Breed Classifier with CNN
 date: 2020-06-04T 20:46:10 +08:00
-description: "This is meta description"
+description: "Building a deep learning model that can identify dog breeds from images and detect whether an image contains a dog or human, using CNNs and transfer learning"
 image: "assets/images/masonary-post/dogs.jpg"
 categories: 
   - "Deep Learning"
