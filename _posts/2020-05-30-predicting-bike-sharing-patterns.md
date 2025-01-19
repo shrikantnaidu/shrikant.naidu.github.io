@@ -2,7 +2,7 @@
 layout: post
 title: "Predicting Bike Sharing Patterns"
 date: 2020-05-30T 20:46:10 +08:00
-description: "This is meta description, our first neural network"
+description: "Building a neural network from scratch to predict daily bike rental ridership patterns using historical data and weather conditions"
 image: "assets/images/masonary-post/bike.jpg"
 categories: 
   - "Deep Learning"
