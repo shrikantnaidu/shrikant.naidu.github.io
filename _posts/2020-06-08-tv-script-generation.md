@@ -2,7 +2,7 @@
 layout: post
 title: Generate TV Scripts
 date: 2020-06-08T 20:46:10 +03:00
-description: "This is meta description"
+description: "Building a recurrent neural network (RNN) to generate original TV scripts by training on Seinfeld dialogue data"
 image: "assets/images/masonary-post/tv-scripts.jpg"
 categories: 
   - "Deep Learning"
